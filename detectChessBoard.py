@@ -2,7 +2,11 @@ import numpy as np
 import cv2
 
 def get_chessboardcorners(img):
-	found, corners = cv2.findChessboardCorners(img, (7, 7))
+	corners = []
+	found, c = cv2.findChessboardCorners(img, (7, 7))
+	
+	for corner in c:
+		corners.append(list(c[0]))
 	return found, corners
 
 def get_chessboardborders(img):
@@ -31,20 +35,14 @@ def get_chessboardrect(contours):
 	borders.append([x+w,y+h])
 	return borders
 
-def get_chessboardhull(img, cntmax):
-	hull = []
-	kernel = np.ones((3, 3), np.uint8)
-
-	image = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
-	hull.append(cv2.convexHull(cntmax, False))
-	cv2.drawContours(image, hull, -1, (255, 255, 255), 1, 16)
-	image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-	contours, h = cv2.findContours(image, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-	return contours
-
 def get_chessboardcoordinates(img, contours):
+	borders = []
 	for contour in contours:
-		epsilon = 0.001 * cv2.arcLength(contour, True)
-		borders = cv2.approxPolyDP(contour, epsilon, True) 
+		epsilon = 0.1 * cv2.arcLength(contour, True)
+		b = cv2.approxPolyDP(contour, epsilon, True) 
+	
+	for corner in b:
+		borders.append(list(b[0]))
+
 	return borders
 
