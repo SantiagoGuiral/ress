@@ -19,10 +19,13 @@ def show_frame():
 	framecap.configure(image=img3)
 	framecap.after(10, show_frame)
 	
+def recognize_board():
+	state_label.configure(text = "State: Succesful")
+
 def finish():
 	pass
 
-def recognize_board():
+def start():
 	pass
 
 def help_view():
@@ -39,7 +42,11 @@ def help_about():
         about_text = f.read()
         l = tk.Label(filewin, text = about_text,justify = "center").pack(padx = 8,pady = 8, fill = 'both', expand = True)
 
-# Menu
+
+# ------------------------------------------------------------------------------
+# Configuración de la interfaz y asociados -------------------------------------
+# ------------------------------------------------------------------------------
+
 menubar = tk.Menu(window)
 
 menufile = tk.Menu(menubar, tearoff = 0)
@@ -52,7 +59,7 @@ helpmenu.add_command(label = "About", command = help_about)
 menubar.add_cascade(label = "Help", menu = helpmenu)
 
 window.config(menu = menubar)
-
+window.tk.call('wm', 'iconphoto', window._w, tk.PhotoImage(file = './resources/icon.png'))
 
 w = 1200
 h = 800
@@ -63,38 +70,63 @@ y = (hs/2) - (h/2)
 window.geometry('%dx%d+%d+%d' % (w, h, x, y))
 window.title("Chess Register Moves: Ress")
 
-# main frame
+# ------------------------------------------------------------------------------
+# Ventana principal del programa -----------------------------------------------
+# ------------------------------------------------------------------------------
+
 main = tk.Frame(window)
 main.place(relx = 0, rely = 0, relwidth = 1, relheight = 1)
 main.configure(bg = 'white')
 
-# show_video frame
+# ---------------------- Sección: Captura de video ----------------------------#
+
 video = tk.LabelFrame(main, text = 'Game', font = 'hold')
 video.place(relx = 0.01, rely = 0.05, relwidth = 0.58, relheight = 0.9)
 video.configure(bg = 'white')
 
-# Capture image frame
+# Ventana con la captura de video
 framecap = tk.Label(video)
-#framecap.place(relx = 0.05, rely = 0.20, relwidth = 0.90, relheight = 0.6)
 framecap.grid(row = 0, column = 0, padx = 24, pady = 100)
 
-# control frame
+# --------------------- Sección: Control del programa -------------------------#
+
 control = tk.LabelFrame(main, text = 'Control', font = 'bold')
 control.place(relx = 0.61, rely = 0.05, relwidth = 0.38, relheight = 0.9)
 control.configure(bg = 'white')
 
-# recognize chessboard
-rec_bt = tk.Button(control, text = 'Recognize Board', bg ='#5d5e43', font = ' bold', fg = 'white', command = recognize_board
-)
-rec_bt.place(relx = 0.2, rely =0.2, relwidth = 0.6, relheight = 0.1)
+# --------------------- Sección: Reconocimiento del tablero -------------------#
 
-# init button
-cap_bt = tk.Button(control, text = 'Start Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command=show_frame)
-cap_bt.place(relx = 0.2, rely = 0.4, relwidth = 0.6, relheight = 0.1)
+recognize_frame = tk.LabelFrame(control, text = "Reconocimiento del tablero", font = 'bold')
+recognize_frame.place(relx = 0.05, rely = 0.05, relwidth = 0.9, relheight = 0.35)
+recognize_frame.configure(bg = 'white')
 
-# finish button
-fin_capbt = tk.Button(control, text = 'Stop Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command=finish)
-fin_capbt.place(relx = 0.2, rely = 0.6, relwidth = 0.6, relheight = 0.1)
+# Botón que reconoce el tamaño y determina sus dimensiones y coordenadas
+rec_btn = tk.Button(recognize_frame, text = 'Recognize Board', bg ='#5d5e43', font = ' bold', fg = 'white', command = recognize_board)
+rec_btn.place(relx = 0.1, rely =0.25, relwidth = 0.8, relheight = 0.3)
 
+# Texto que indica el estado del reconocimiento inicial del tablero
+state_label = tk.Label(recognize_frame, text = "State: ")
+state_label.place(relx = 0.1, rely =0.65)
+state_label.configure(bg = 'white', fg = 'red', font = 'bold')
 
+# --------------------- Sección: Control de la partida ------------------------#
+
+game_frame = tk.LabelFrame(control, text = "Captura de la partida", font = 'bold')
+game_frame.place(relx = 0.05, rely = 0.45, relwidth = 0.9, relheight = 0.5)
+game_frame.configure(bg = 'white')
+
+# Botón que inicia la captura de la partida de ajedrez
+cap_btn = tk.Button(game_frame, text = 'Start Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command=start)
+cap_btn.place(relx = 0.1, rely = 0.15, relwidth = 0.8, relheight = 0.2)
+
+# Botón que finaliza la captura de la partida de ajedrez y genera un archivo txt con los movimientos en formato PGN
+fin_btn = tk.Button(game_frame, text = 'Stop Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command=finish)
+fin_btn.place(relx = 0.1, rely = 0.5, relwidth = 0.8, relheight = 0.2)
+
+# Texto que indica el estado final del programa
+png_label = tk.Label(game_frame, text = "PNG State: ")
+png_label.place(relx = 0.1, rely =0.8)
+png_label.configure(bg = 'white', fg = 'red', font = 'bold')
+
+show_frame()
 window.mainloop()
