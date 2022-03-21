@@ -8,35 +8,50 @@ import matplotlib.pyplot as plt
 
 import detectChessBoard as dcb
 
-global coordinates
-
-url = 0 # "https://192.168.0.15:8080/video"
+url =  "http://192.168.0.15:8080/video"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
 
 def show_frame():
 	global frame
-	ret, frame = cap.read()
-	frame = cv2.flip(frame, 1)
-	img1 = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-	img2 = Image.fromarray(img1)
-	img3 = ImageTk.PhotoImage(image = img2)
-	framecap.img3 = img3
-	framecap.configure(image=img3)
-	framecap.after(10, show_frame)
+	if cap.isOpened():
+		ret, frame = cap.read()
+		frameshow = frame.copy()
+		frameshow = cv2.resize(frameshow, (600, 400))
+		img1 = cv2.cvtColor(frameshow, cv2.COLOR_BGR2RGBA)
+		img2 = Image.fromarray(img1)
+		img3 = ImageTk.PhotoImage(image = img2)
+		framecap.img3 = img3
+		framecap.configure(image=img3)
+		framecap.after(10, show_frame)
 	
 def recognize_board(frame):
-	
-	plt.imshow(frame)
+	global board_image, rect, borders
+	board_image = frame.copy()
+	image1 = dcb.get_chessboardborders(frame)
+	contour = dcb.getchessboarcontour(image1)
+	rect, w, h = dcb.get_chessboardrect(contour)
+	contours, image2 = dcb.chessboardhull(image1, contour)
+	borders = dcb.get_chessboardcoordinates(image2, contours)
+	board = dcb.get_perspective(borders, rect, w, h, board_image)
+
+	print(borders)
+	print(rect)
+
+	plt.imshow(board)
 	plt.savefig("frame.png")
+
 	state_label.configure(text = "State: Succesful")
+
+
+def start():
+	pass
+
 
 def finish():
 	pass
 
-def start():
-	pass
 
 def help_view():
     filewin = tk.Toplevel()
@@ -44,6 +59,7 @@ def help_view():
     with open("./resources/help.txt",'r') as f:
         about_text = f.read()
         l = tk.Label(filewin, text = about_text, justify = "left").pack(padx = 8, pady = 8, fill = 'both', expand = True)
+
 
 def help_about():
     filewin = tk.Toplevel()

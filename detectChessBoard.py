@@ -27,7 +27,7 @@ def get_chessboardcorners(img):
 
 
 def get_chessboardborders(img):
-	tinf, tsup =  20, 50
+	tinf, tsup =  25, 60
 	kernel = np.ones((3, 3), np.uint8)
 
 	image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -74,7 +74,7 @@ def get_chessboardcoordinates(img, contours):
 def get_chessboardsrect(cntmax):
 	(x, y, w, h) = cv2.boundingRect(cntmax)
 	corners = [[x, y],[x+w, y],[x, y+h],[x+w, y+h]]
-	return corners
+	return corners, w, h
 
 
 def get_perspective(pts_init, pts_final, w, h, img):
