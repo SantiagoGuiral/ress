@@ -1,5 +1,21 @@
 import numpy as np
 import cv2
+from scipy.spatial import distance as dist
+
+def order_points(pts):
+	xSorted = pts[np.argsort(pts[:, 0]), :]
+
+	leftMost = xSorted[:2, :]
+	rightMost = xSorted[2:, :]
+
+	leftMost = leftMost[np.argsort(leftMost[:, 1]), :]
+	(tl, bl) = leftMost
+
+	D = dist.cdist(tl[np.newaxis], rightMost, "euclidean")[0]
+	(br, tr) = rightMost[np.argsort(D)[::-1], :]
+
+	return [tl, tr, bl, br]
+
 
 def get_chessboardcorners(img):
 	corners = []
@@ -36,7 +52,7 @@ def get_chessboardhull(img, cntmax):
 	drawing = np.zeros(img.shape[0], img.shape[1], 3, np.uint8)
 	color = (255, 255, 255)
 
-	hull.append(cv2.convexHull(cntmax, False)
+	hull.append(cv2.convexHull(cntmax, False))
 	cv2.drawContours(drawing, hull, -1, color, 1, 16)
 	image = cv2.cvtColor(drawing, cv2.COLOR_BGR2GRAY)
 
@@ -45,19 +61,17 @@ def get_chessboardhull(img, cntmax):
 
 
 def get_chessboardcoordinates(img, contours):
-	borders = []
 	for contour in contours:
 		epsilon = 0.1 * cv2.arcLength(contour, True)
-		b = cv2.approxPolyDP(contour, epsilon, True) 
+		borders = cv2.approxPolyDP(contour, epsilon, True) 
+
+	b1 = np.array([list(borders[0][0]), list(borders[1][0]), list(borders[2][0]), list(borders[3][0])])
+	borders = order_points(b1)
 	
-	for corner in b:
-		borders.append(list(b[0]))
-
-	corners = [borders[0], borders[3], borders[1], borders[2]]
-	return corners
+	return borders
 
 
-def get get_chessboardsrect(cntmax):
+def get_chessboardsrect(cntmax):
 	(x, y, w, h) = cv2.boundingRect(cntmax)
 	corners = [[x, y],[x+w, y],[x, y+h],[x+w, y+h]]
 	return corners

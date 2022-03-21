@@ -1,8 +1,12 @@
-Filterviz-Filterbank
-Electronic Engineering Students
+Register of Chess Movement
 Universidad de Antioquia
-Filter Bank and comparative program for the desing of digital Filters
+Departamento de Electrónica y Telecomunicaciones
+Electronic ingeneering students
+
+Register of chess movements while converting the game into a PGN format
 
 Authors:
-Santiago Ríos Guiral(gh@SantiagoGuiral/gl@sguiral)
+Santiago Ríos Guiral(@SantiagoGuiral)
+santiago.riosg@udea.edu.co
 Emmanuel Gomez Ospina(@ego2509)
+emmanuel.gomezo@udea.edu.co

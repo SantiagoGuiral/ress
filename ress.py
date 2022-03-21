@@ -4,12 +4,19 @@ from tkinter import messagebox
 import cv2
 import numpy as np
 from PIL import Image, ImageTk
+import matplotlib.pyplot as plt
+
+import detectChessBoard as dcb
+
+global coordinates
+
+url = 0 # "https://192.168.0.15:8080/video"
 
 window = tk.Tk()
-
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(url)
 
 def show_frame():
+	global frame
 	ret, frame = cap.read()
 	frame = cv2.flip(frame, 1)
 	img1 = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
@@ -19,7 +26,10 @@ def show_frame():
 	framecap.configure(image=img3)
 	framecap.after(10, show_frame)
 	
-def recognize_board():
+def recognize_board(frame):
+	
+	plt.imshow(frame)
+	plt.savefig("frame.png")
 	state_label.configure(text = "State: Succesful")
 
 def finish():
@@ -70,6 +80,11 @@ y = (hs/2) - (h/2)
 window.geometry('%dx%d+%d+%d' % (w, h, x, y))
 window.title("Chess Register Moves: Ress")
 
+#
+#
+#
+
+
 # ------------------------------------------------------------------------------
 # Ventana principal del programa -----------------------------------------------
 # ------------------------------------------------------------------------------
@@ -101,7 +116,7 @@ recognize_frame.place(relx = 0.05, rely = 0.05, relwidth = 0.9, relheight = 0.35
 recognize_frame.configure(bg = 'white')
 
 # Botón que reconoce el tamaño y determina sus dimensiones y coordenadas
-rec_btn = tk.Button(recognize_frame, text = 'Recognize Board', bg ='#5d5e43', font = ' bold', fg = 'white', command = recognize_board)
+rec_btn = tk.Button(recognize_frame, text = 'Recognize Board', bg ='#5d5e43', font = ' bold', fg = 'white', command = lambda:recognize_board(frame))
 rec_btn.place(relx = 0.1, rely =0.25, relwidth = 0.8, relheight = 0.3)
 
 # Texto que indica el estado del reconocimiento inicial del tablero
