@@ -49,7 +49,7 @@ def get_chessboardhull(img, cntmax):
 	kernel = np.ones((3, 3), np.uint8)
 	hull = []
 	
-	drawing = np.zeros(img.shape[0], img.shape[1], 3, np.uint8)
+	drawing = np.zeros((img.shape[0], img.shape[1], 3), np.uint8)
 	color = (255, 255, 255)
 
 	hull.append(cv2.convexHull(cntmax, False))
@@ -71,7 +71,7 @@ def get_chessboardcoordinates(img, contours):
 	return borders
 
 
-def get_chessboardsrect(cntmax):
+def get_chessboardrect(cntmax):
 	(x, y, w, h) = cv2.boundingRect(cntmax)
 	corners = [[x, y],[x+w, y],[x, y+h],[x+w, y+h]]
 	return corners, w, h

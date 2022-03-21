@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 import detectChessBoard as dcb
 
-url =  "http://192.168.0.15:8080/video"
+url = 0# "http://192.168.0.15:8080/video"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
@@ -26,21 +26,22 @@ def show_frame():
 		framecap.configure(image=img3)
 		framecap.after(10, show_frame)
 	
-def recognize_board(frame):
+def recognize_board(cframe):
 	global board_image, rect, borders
-	board_image = frame.copy()
-	image1 = dcb.get_chessboardborders(frame)
-	contour = dcb.getchessboarcontour(image1)
+	capture_frame = cframe.copy()
+	image1 = dcb.get_chessboardborders(capture_frame)
+
+	image1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+	contour = dcb.get_chessboardcontour(image1)
 	rect, w, h = dcb.get_chessboardrect(contour)
-	contours, image2 = dcb.chessboardhull(image1, contour)
+	contours, image2 = dcb.get_chessboardhull(image1, contour)
 	borders = dcb.get_chessboardcoordinates(image2, contours)
-	board = dcb.get_perspective(borders, rect, w, h, board_image)
 
-	print(borders)
-	print(rect)
+	#board = dcb.get_perspective(borders, rect, w, h, cframe)
 
-	plt.imshow(board)
-	plt.savefig("frame.png")
+	print(f'borders: {borders}')
+	print(f'rect: {rect}')
+
 
 	state_label.configure(text = "State: Succesful")
 
@@ -161,3 +162,4 @@ png_label.configure(bg = 'white', fg = 'red', font = 'bold')
 
 show_frame()
 window.mainloop()
+cap.release()	# Suelta el control del programa sobre la cámara del computador

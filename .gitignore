@@ -1,3 +1,4 @@
 .ipy*
 pruebas/.ipy*
 *.swp
+__pycache__
