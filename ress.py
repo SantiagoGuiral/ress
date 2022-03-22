@@ -29,22 +29,22 @@ def show_frame():
 def recognize_board(cframe):
 	global board_image, rect, borders
 	capture_frame = cframe.copy()
+	capture_frame = cv2.imread('./pruebas/photos2/board3.jpg')
+	cframe = capture_frame.copy()
 	image1 = dcb.get_chessboardborders(capture_frame)
-
-	image1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
 	contour = dcb.get_chessboardcontour(image1)
 	rect, w, h = dcb.get_chessboardrect(contour)
 	contours, image2 = dcb.get_chessboardhull(image1, contour)
 	borders = dcb.get_chessboardcoordinates(image2, contours)
-
-	#board = dcb.get_perspective(borders, rect, w, h, cframe)
-
-	print(f'borders: {borders}')
-	print(f'rect: {rect}')
-
+	board = dcb.get_perspective(borders, rect, w, h, cframe)
 
 	state_label.configure(text = "State: Succesful")
 
+	print(f'borders cv2: {borders}')
+	print(f'rect {rect}')
+
+	plt.imshow(board)
+	plt.savefig('board.png')
 
 def start():
 	pass
@@ -69,6 +69,9 @@ def help_about():
         about_text = f.read()
         l = tk.Label(filewin, text = about_text,justify = "center").pack(padx = 8,pady = 8, fill = 'both', expand = True)
 
+def close_all():
+	cap.release()	# Suelta el control del programa sobre la cámara del computador
+	cv2.destroyAllWindows()
 
 # ------------------------------------------------------------------------------
 # Configuración de la interfaz y asociados -------------------------------------
@@ -77,8 +80,9 @@ def help_about():
 menubar = tk.Menu(window)
 
 menufile = tk.Menu(menubar, tearoff = 0)
-menufile.add_command(label = "Exit", command = window.quit)
 menubar.add_cascade(label = "File", menu = menufile)
+menufile.add_command(label = "Close cam", command = close_all)
+menufile.add_command(label = "Exit", command = window.quit)
 
 helpmenu = tk.Menu(menubar, tearoff = 0)
 helpmenu.add_command(label = "Help", command = help_view)

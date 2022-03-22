@@ -33,7 +33,7 @@ def get_chessboardborders(img):
 	image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	image = cv2.GaussianBlur(image, (3, 3), 1)
 	image = cv2.Canny(image, tinf, tsup)
-	image = cv2.dilate(img, kernel, iterations = 2)
+	image = cv2.dilate(image, kernel, iterations = 2)
 	return image
 
 
@@ -78,8 +78,10 @@ def get_chessboardrect(cntmax):
 
 
 def get_perspective(pts_init, pts_final, w, h, img):
+	pts_init = np.float32(pts_init)
+	pts_final = np.float32([[0,0],[w,0],[0,h],[w,h]])
+
 	M = cv2.getPerspectiveTransform(pts_init, pts_final)
 	image = cv2.warpPerspective(img, M, (w, h))
 	return image
-
 
