@@ -1,12 +1,30 @@
+"""
+----------SANTIAGO RIOS GUIRAL--------------------------------------------------
+----------santiago.riosg@udea.edu.co--------------------------------------------
+--------------------------------------------------------------------------------
+----------EMMANUEL GOMEZ OSPINA-------------------------------------------------
+----------emmanuel.gomezo@udea.edu.co-------------------------------------------
+--------------------------------------------------------------------------------
+----------Curso Básico de Procesamiento de Imágenes y Visión Artificial---------
+--------------------------------------------------------------------------------
+----------Basado en tutorial:---------------------------------------------------
+----------https://gist.github.com/pknowledge/623515e8ab35f1771ca2186630a13d14---
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+"""
+
 import cv2
 import numpy as np
 
-url = "https://10.1.143.75:8080/video"
 
-cap = cv2.VideoCapture(url)
+url = 0 #'http://192.168.0.4:8080/video'
+cap = cv2.VideoCapture(url) # Abre el archivo de video para capturar con la cámara
+
 
 frame_width = int( cap.get(3)) # Ancho de la imágen capturada por la cámara
 frame_height =int( cap.get(4)) # Alto de la imágen capturada por la cámara
+
+
 
 # Captura consecutiva de la imágen
 ret, frame1 = cap.read() # Captura del primer pantallazo
@@ -27,7 +45,7 @@ while cap.isOpened():
 		(x, y, w, h) = cv2.boundingRect(contour) # Obtiene las coordenadas del contorno
 
 		#Discrimina el dibujo de rectangulos cuando el movimiento es muy pequeño
-		if cv2.contourArea(contour) < 800:
+		if cv2.contourArea(contour) < 200:
 			continue
 		cv2.rectangle(frame1, (x, y), (x+w, y+h), (255, 0, 0), 2) # Dibuja el rectangulo
 		cv2.putText(frame1, "{}".format('Movement'), (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2) # Escribe que hay movimiento en la captura

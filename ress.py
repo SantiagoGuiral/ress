@@ -29,8 +29,6 @@ def show_frame():
 def recognize_board(cframe):
 	global board_image, rect, borders
 	capture_frame = cframe.copy()
-	capture_frame = cv2.imread('./pruebas/photos2/board3.jpg')
-	cframe = capture_frame.copy()
 	image1 = dcb.get_chessboardborders(capture_frame)
 	contour = dcb.get_chessboardcontour(image1)
 	rect, w, h = dcb.get_chessboardrect(contour)
