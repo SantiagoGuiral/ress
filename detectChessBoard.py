@@ -1,3 +1,14 @@
+"""
+----------SANTIAGO RIOS GUIRAL--------------------------------------------------
+----------santiago.riosg@udea.edu.co--------------------------------------------
+--------------------------------------------------------------------------------
+----------EMMANUEL GOMEZ OSPINA-------------------------------------------------
+----------emmanuel.gomezo@udea.edu.co-------------------------------------------
+--------------------------------------------------------------------------------
+----------Curso Básico de Procesamiento de Imágenes y Visión Artificial---------
+--------------------------------------------------------------------------------
+"""
+
 import numpy as np
 import cv2
 from scipy.spatial import distance as dist
@@ -65,9 +76,11 @@ def get_chessboardcoordinates(img, contours):
 		epsilon = 0.1 * cv2.arcLength(contour, True)
 		borders = cv2.approxPolyDP(contour, epsilon, True) 
 
-	b1 = np.array([list(borders[0][0]), list(borders[1][0]), list(borders[2][0]), list(borders[3][0])])
-	borders = order_points(b1)
-	
+	if len(borders) == 4:
+		borders = np.array([list(borders[0][0]), list(borders[1][0]), list(borders[2][0]), list(borders[3][0])])
+		borders = order_points(borders)
+	else:
+		borders = None
 	return borders
 
 

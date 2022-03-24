@@ -27,22 +27,28 @@ def show_frame():
 		framecap.after(10, show_frame)
 	
 def recognize_board(cframe):
-	global board_image, rect, borders
+	global board, rect, borders
 	capture_frame = cframe.copy()
 	image1 = dcb.get_chessboardborders(capture_frame)
 	contour = dcb.get_chessboardcontour(image1)
 	rect, w, h = dcb.get_chessboardrect(contour)
 	contours, image2 = dcb.get_chessboardhull(image1, contour)
 	borders = dcb.get_chessboardcoordinates(image2, contours)
-	board = dcb.get_perspective(borders, rect, w, h, cframe)
 
-	state_label.configure(text = "State: Succesful")
+	if borders == None:
+		state_label.configure(text = "State: Not Succesful")
+	else:
+		if (len(borders) == 4 and len(rect) == 4):
+			board = dcb.get_perspective(borders, rect, w, h, cframe)
+			state_label.configure(text = "State: Succesful")
 
-	print(f'borders cv2: {borders}')
-	print(f'rect {rect}')
+			plt.imshow(board)
+			plt.savefig('board.png')
+			print(f'borders cv2: {borders}')
+			print(f'rect {rect}')
 
-	plt.imshow(board)
-	plt.savefig('board.png')
+		else:
+			state_label.configure(text = "State: Not Succesful")
 
 def start():
 	pass
