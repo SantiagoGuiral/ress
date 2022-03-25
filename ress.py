@@ -9,17 +9,30 @@ import matplotlib.pyplot as plt
 import detectChessBoard as dcb
 import utils as utils
 
-url = 0# "http://192.168.0.15:8080/video"
+url = "http://192.168.0.5:8080/video"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
+
+start_detection = False
 
 pgn = ""
 
 def show_frame():
 	global frame
+	prev_frame = None
 	if cap.isOpened():
+
+		if prev_frame == None:
+			ret, prev_frame = cap.read()
+		else:
+			prev_frame = frame
+
 		ret, frame = cap.read()
+
+		# Detección del movimiento
+		if start_detection == True:
+			get_motion(prev_frame,frame):
 
 
 		# Muestra la captura de pantalla en la interfaz del programa
@@ -31,7 +44,7 @@ def show_frame():
 		framecap.img3 = img3
 		framecap.configure(image = img3)
 		framecap.after(10, show_frame)
-
+	
 	
 def recognize_board(cframe):
 	global board, rect, borders
@@ -59,6 +72,7 @@ def recognize_board(cframe):
 
 
 def start():
+	start_detection = True
 	print(f'borders cv2: {borders}')
 	print(f'rect {rect}')
 
