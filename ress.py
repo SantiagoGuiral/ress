@@ -14,7 +14,7 @@ url = 0# "http://192.168.0.15:8080/video"
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
 
-png = ""
+pgn = ""
 
 def show_frame():
 	global frame
@@ -64,8 +64,8 @@ def start():
 
 
 def finish():
-	utils.save_png("png")
-	png_label.configure(text = "PNG State: Saved successfully")
+	utils.save_pgn(pgn)
+	pgn_label.configure(text = "PGN State: Saved successfully")
 
 
 def help_view():
@@ -171,9 +171,9 @@ fin_btn = tk.Button(game_frame, text = 'Stop Recording', bg = '#5d5e43', font = 
 fin_btn.place(relx = 0.1, rely = 0.5, relwidth = 0.8, relheight = 0.2)
 
 # Texto que indica el estado final del programa
-png_label = tk.Label(game_frame, text = "PNG State: ")
-png_label.place(relx = 0.1, rely =0.8)
-png_label.configure(bg = 'white', fg = 'red', font = 'bold')
+pgn_label = tk.Label(game_frame, text = "PNG State: ")
+pgn_label.place(relx = 0.1, rely =0.8)
+pgn_label.configure(bg = 'white', fg = 'red', font = 'bold')
 
 show_frame()
 window.mainloop()

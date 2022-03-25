@@ -9,10 +9,7 @@
 --------------------------------------------------------------------------------
 """
 
-def save_png(txt):
+def save_pgn(txt):
 	with open ('chess-png.txt', 'w') as f:
 		f.write(txt)
 
-
-txtt = "hola"
-save_png(txtt)
