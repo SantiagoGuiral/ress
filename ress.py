@@ -7,24 +7,31 @@ from PIL import Image, ImageTk
 import matplotlib.pyplot as plt
 
 import detectChessBoard as dcb
+import utils as utils
 
 url = 0# "http://192.168.0.15:8080/video"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
 
+png = ""
+
 def show_frame():
 	global frame
 	if cap.isOpened():
 		ret, frame = cap.read()
+
+
+		# Muestra la captura de pantalla en la interfaz del programa
 		frameshow = frame.copy()
 		frameshow = cv2.resize(frameshow, (600, 400))
 		img1 = cv2.cvtColor(frameshow, cv2.COLOR_BGR2RGBA)
 		img2 = Image.fromarray(img1)
 		img3 = ImageTk.PhotoImage(image = img2)
 		framecap.img3 = img3
-		framecap.configure(image=img3)
+		framecap.configure(image = img3)
 		framecap.after(10, show_frame)
+
 	
 def recognize_board(cframe):
 	global board, rect, borders
@@ -50,12 +57,15 @@ def recognize_board(cframe):
 		else:
 			state_label.configure(text = "State: Not Succesful")
 
+
 def start():
-	pass
+	print(f'borders cv2: {borders}')
+	print(f'rect {rect}')
 
 
 def finish():
-	pass
+	utils.save_png("png")
+	png_label.configure(text = "PNG State: Saved successfully")
 
 
 def help_view():
