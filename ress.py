@@ -71,7 +71,8 @@ def help_about():
     filewin.title("About")
     with open("./resources/about.txt",'r') as f:
         about_text = f.read()
-        l = tk.Label(filewin, text = about_text,justify = "center").pack(padx = 8,pady = 8, fill = 'both', expand = True)
+        l = tk.Label(filewin, text = about_text, justify = "center").pack(padx = 8,pady = 8, fill = 'both', expand = True)
+
 
 def close_all():
 	cap.release()	# Suelta el control del programa sobre la cámara del computador
@@ -104,10 +105,6 @@ x = (ws/2) - (w/2)
 y = (hs/2) - (h/2)
 window.geometry('%dx%d+%d+%d' % (w, h, x, y))
 window.title("Chess Register Moves: Ress")
-
-#
-#
-#
 
 
 # ------------------------------------------------------------------------------
@@ -142,11 +139,11 @@ recognize_frame.configure(bg = 'white')
 
 # Botón que reconoce el tamaño y determina sus dimensiones y coordenadas
 rec_btn = tk.Button(recognize_frame, text = 'Recognize Board', bg ='#5d5e43', font = ' bold', fg = 'white', command = lambda:recognize_board(frame))
-rec_btn.place(relx = 0.1, rely =0.25, relwidth = 0.8, relheight = 0.3)
+rec_btn.place(relx = 0.1, rely = 0.25, relwidth = 0.8, relheight = 0.3)
 
 # Texto que indica el estado del reconocimiento inicial del tablero
 state_label = tk.Label(recognize_frame, text = "State: ")
-state_label.place(relx = 0.1, rely =0.65)
+state_label.place(relx = 0.1, rely = 0.65)
 state_label.configure(bg = 'white', fg = 'red', font = 'bold')
 
 # --------------------- Sección: Control de la partida ------------------------#
@@ -156,11 +153,11 @@ game_frame.place(relx = 0.05, rely = 0.45, relwidth = 0.9, relheight = 0.5)
 game_frame.configure(bg = 'white')
 
 # Botón que inicia la captura de la partida de ajedrez
-cap_btn = tk.Button(game_frame, text = 'Start Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command=start)
+cap_btn = tk.Button(game_frame, text = 'Start Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command = start)
 cap_btn.place(relx = 0.1, rely = 0.15, relwidth = 0.8, relheight = 0.2)
 
 # Botón que finaliza la captura de la partida de ajedrez y genera un archivo txt con los movimientos en formato PGN
-fin_btn = tk.Button(game_frame, text = 'Stop Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command=finish)
+fin_btn = tk.Button(game_frame, text = 'Stop Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command = finish)
 fin_btn.place(relx = 0.1, rely = 0.5, relwidth = 0.8, relheight = 0.2)
 
 # Texto que indica el estado final del programa

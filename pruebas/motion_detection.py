@@ -45,13 +45,12 @@ while cap.isOpened():
 		(x, y, w, h) = cv2.boundingRect(contour) # Obtiene las coordenadas del contorno
 
 		#Discrimina el dibujo de rectangulos cuando el movimiento es muy pequeño
-		if cv2.contourArea(contour) < 200:
+		if cv2.contourArea(contour) < 300:
 			continue
 		cv2.rectangle(frame1, (x, y), (x+w, y+h), (255, 0, 0), 2) # Dibuja el rectangulo
 		cv2.putText(frame1, "{}".format('Movement'), (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2) # Escribe que hay movimiento en la captura
 
 	cv2.imshow("Camera", frame1)
-	cv2.imshow("threshold", thresh)
 
 	frame1 = frame2 # Alternamos la imágen que se captura para una nueva comparación
 	ret, frame2 = cap.read() # Se obtiene una nueva captura de imágen

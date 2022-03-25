@@ -1,5 +1,6 @@
 .ipy*
 pruebas/.ipy*
+pruebas/__pycache__/
 *.swp
 __pycache__/
 __pycache__/*
