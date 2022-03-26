@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 import detectChessBoard as dcb
 import utils as utils
+import motion as md
 
 url = 0#"http://192.168.0.5:8080/video"
 
@@ -28,12 +29,13 @@ def show_frame():
 		else:
 			prev_frame = frame
 
-
+		# Captura de la toma desde la cámara
 		ret, frame = cap.read()
 
 		# Detección del movimiento
 		if start_detection == True:
-			get_motion(prev_frame, frame)
+			motion = md.get_motion(prev_frame, frame)	
+			print(f'motion: {motion}')
 
 		prev_frame = frame
 		# Muestra la captura de pantalla en la interfaz del programa
@@ -73,12 +75,12 @@ def recognize_board(cframe):
 
 
 def start():
+	global start_detection
 	start_detection = True
-	print(f'borders cv2: {borders}')
-	print(f'rect {rect}')
-
+	print("Game Recording On")
 
 def finish():
+	motion_detection = False
 	utils.save_pgn(pgn)
 	pgn_label.configure(text = "PGN State: Saved successfully")
 
