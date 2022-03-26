@@ -7,17 +7,13 @@
 --------------------------------------------------------------------------------
 ----------Curso Básico de Procesamiento de Imágenes y Visión Artificial---------
 --------------------------------------------------------------------------------
-----------Basado en tutorial:---------------------------------------------------
-----------https://gist.github.com/pknowledge/623515e8ab35f1771ca2186630a13d14---
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
 """
 
 import cv2
 import numpy as np
 
 
-url = 0 #'http://192.168.0.4:8080/video'
+url = 0
 cap = cv2.VideoCapture(url) # Abre el archivo de video para capturar con la cámara
 
 
@@ -33,10 +29,14 @@ ret, frame2 = cap.read() # Captura del segundo pantallazo
 kernel = np.ones((3, 3), np.uint8) # Elemento estructurante para la dilatación
 
 while cap.isOpened():
-	diff = cv2.absdiff(frame1, frame2) # Obtiene la diferencia entre las 2 capturas - restar
-	gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY) # Conversión de RGB al espacio de grises
+
+	prev_gray = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY) # Conversión de RGB al espacio de grises
+	gray = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY) # Conversión de RGB al espacio de grises
+	prev_blur = cv2.GaussianBlur(prev_gray, (5,5), 0) # Eliminación del ruido
 	blur = cv2.GaussianBlur(gray, (5,5), 0) # Eliminación del ruido
-	h, thresh = cv2.threshold(blur, 20, 255, cv2.THRESH_BINARY) # Binariza la diferencia
+
+	diff = cv2.absdiff(prev_blur, blur) # Obtiene la diferencia entre las 2 capturas - restar
+	h, thresh = cv2.threshold(diff, 20, 255, cv2.THRESH_BINARY) # Binariza la diferencia
 	dilated = cv2.dilate(thresh, kernel, iterations=1) # Agranda la mascara
 	contours, _ = cv2.findContours(dilated, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) # Encuentra todos los contornos de las mascaras que representan el movimiento
 
