@@ -4,3 +4,7 @@ pruebas/__pycache__/
 *.swp
 __pycache__/
 __pycache__/*
+pruebas/photos/
+pruebas/diff/
+pruebas/subs/
+pruebas/test/
