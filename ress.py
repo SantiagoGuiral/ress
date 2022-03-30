@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import detectChessBoard as dcb
 import utils as utils
 import motion as md
+import diff as diff
 
 url = 0#"http://192.168.0.5:8080/video"
 
