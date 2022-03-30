@@ -42,7 +42,6 @@ def show_frame():
 		if start_detection == True:
 			if start_diff == True:
 				frame_prevdiff = frame
-				frame_prevdiff = dcb.getperspective(borders, rect, boardw, boardh, frame_prevdiff)
 				start_diff = False
 
 			motion = md.get_motion(prev_frame, frame)
@@ -50,6 +49,7 @@ def show_frame():
 			if motion == False:
 				motion_cnt += 1
 				if motion_cnt == 20:
+					frame_prevdiff = dcb.getperspective(borders, rect, boardw, boardh, frame_prevdiff)
 					frame_actdiff = dcb.getperspective(borders, rect, boardw, boardh, frame)
 					c1, c2 = diff.difference(frame_prevdiff, frame_actdiff)
 					if c1 != c2:
