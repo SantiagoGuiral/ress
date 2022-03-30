@@ -11,17 +11,22 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = 0#"http://192.168.0.5:8080/video"
+url = "video.mp4"#"http://192.168.0.5:8080/video"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
 
+board_recognized = False
 start_detection = False
-
+start_diff = False
+borders = None
+rect = None
+frame_prevdiff = None
+pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame
+	global frame, rect, borders, boardw, boardh, pos, pgn
 	prev_frame = None
 	if cap.isOpened():
 
@@ -35,12 +40,31 @@ def show_frame():
 
 		# Detección del movimiento
 		if start_detection == True:
-			motion = md.get_motion(prev_frame, frame)	
-			print(f'motion: {motion}')
+			if start_diff == True:
+				frame_prevdiff = frame
+				frame_prevdiff = dcb.getperspective(borders, rect, boardw, boardh, frame_prevdiff)
+				start_diff = False
+
+			motion = md.get_motion(prev_frame, frame)
+			motion_cnt = 0
+			if motion == False:
+				motion_cnt += 1
+				if motion_cnt == 20:
+					frame_actdiff = dcb.getperspective(borders, rect, boardw, boardh, frame)
+					c1, c2 = diff.difference(frame_prevdiff, frame_actdiff)
+					if c1 != c2:
+						wc, hc = utils.rect_size(boardw, boardh)
+						coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
+						coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
+						pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
+						pgn += move
+					motion_cnt = 0
+					frame_prevediff = frame
+
 
 		prev_frame = frame
 		# Muestra la captura de pantalla en la interfaz del programa
-		frameshow = frame.copy()
+		frameshow = frame
 		frameshow = cv2.resize(frameshow, (600, 400))
 		img1 = cv2.cvtColor(frameshow, cv2.COLOR_BGR2RGBA)
 		img2 = Image.fromarray(img1)
@@ -51,11 +75,12 @@ def show_frame():
 	
 	
 def recognize_board(cframe):
-	global board, rect, borders
+	global board, rect, borders, boardw, boardh, board_recognized
+	board_recognized = True
 	capture_frame = cframe.copy()
 	image1 = dcb.get_chessboardborders(capture_frame)
 	contour = dcb.get_chessboardcontour(image1)
-	rect, w, h = dcb.get_chessboardrect(contour)
+	rect, boardw, boardh = dcb.get_chessboardrect(contour)
 	contours, image2 = dcb.get_chessboardhull(image1, contour)
 	borders = dcb.get_chessboardcoordinates(image2, contours)
 
@@ -63,7 +88,7 @@ def recognize_board(cframe):
 		state_label.configure(text = "State: Not Succesful")
 	else:
 		if (len(borders) == 4 and len(rect) == 4):
-			board = dcb.get_perspective(borders, rect, w, h, cframe)
+			board = dcb.get_perspective(borders, rect, boardw, boardh, cframe)
 			state_label.configure(text = "State: Succesful")
 
 			plt.imshow(board)
@@ -76,12 +101,14 @@ def recognize_board(cframe):
 
 
 def start():
-	global start_detection
+	global start_detection, start_diff
+	start_diff = True
 	start_detection = True
 	print("Game Recording On")
 
 def finish():
-	motion_detection = False
+	global start_detection
+	start_detection = False
 	utils.save_pgn(pgn)
 	pgn_label.configure(text = "PGN State: Saved successfully")
 
