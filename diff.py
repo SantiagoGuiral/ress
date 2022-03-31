@@ -11,7 +11,7 @@
 
 import cv2
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 def difference(prev_frame, frame):
 	kernel = np.ones((7, 7), np.uint8)
@@ -26,6 +26,7 @@ def difference(prev_frame, frame):
 	diff = cv2.dilate(diff, kernel, iterations = 2)
 
 	h, thresh = cv2.threshold(diff, 18, 255, cv2.THRESH_BINARY)
+	hand = detect_hand(thresh)	
 
 	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -49,6 +50,19 @@ def difference(prev_frame, frame):
 		c1 = (0, 0)
 		c2 = (0, 0)
 
-	return c1, c2
+	return c1, c2, hand
+
+
+def detect_hand(frame):
+	hand = False
+
+	contours, _ = cv2.findContours(frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+	for contour in contours:
+		if cv2.contourArea(contour) > 500:
+			hand = True
+			break
+
+	return hand
 
 

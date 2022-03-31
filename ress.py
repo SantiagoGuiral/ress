@@ -23,11 +23,12 @@ borders = None
 rect = None
 frame_prevdiff = None
 frame_actdiff = None
+hand = False
 pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff
+	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, hand
 	prev_frame = None
 	if cap.isOpened():
 
@@ -49,16 +50,20 @@ def show_frame():
 			if motion == False:
 				frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
 				frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
-				c1, c2 = diff.difference(frame_prevdiff, frame_actdiff)
+				c1, c2, hand = diff.difference(frame_prevdiff, frame_actdiff)
 				print(f'c1: {c1} c2: {c2}')
-				if c1 != c2:
+				print(f'hand: {hand}')
+				if hand == False:
 					wc, hc = utils.rect_size(boardw, boardh)
+					print(f'wc {wc} hc {hc}')
 					coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
 					coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
+					print(f'coordinate 1: {coordinate1} coordinate 2: {coordinate2}')
 					pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
-					pgn = utils.update_pgn(pgn)
-					frame_prevediff = frame
-				start_diff = True
+					print(f'piece {piece} move {move}')
+					pgn = utils.update_pgn(pgn, move)
+					hand = True
+					start_diff = True
 
 			print(f'motion: {motion}')
 
@@ -90,7 +95,7 @@ def recognize_board(cframe):
 	else:
 		if (len(borders) == 4 and len(rect) == 4):
 			board = dcb.get_perspective(borders, rect, boardw, boardh, cframe)
-			state_label.configure(text = "State: Succesful")
+			state_label.configure(text = "State: Succesful", bg = 'white', fg = 'green', font = 'bold')
 
 			plt.imshow(board)
 			plt.savefig('board.png')
@@ -98,21 +103,24 @@ def recognize_board(cframe):
 			print(f'rect {rect}')
 
 		else:
-			state_label.configure(text = "State: Not Succesful")
+			state_label.configure(text = "State: Not Succesful", bg = 'white', fg = 'red', font = 'bold')
 
 
 def start():
 	global start_detection, start_diff
 	start_diff = True
 	start_detection = True
-	print("Game Recording On")
+
+	recording_label.configure(text = 'Recording State: On', bg = 'white', fg = 'green', font = 'bold')
+
 
 def finish():
 	global start_detection
 	start_detection = False
 	utils.save_pgn(pgn)
-	pgn_label.configure(text = "PGN State: Saved successfully")
 
+	pgn_label.configure(text = "PGN State: Saved successfully")
+	recording_label.configure(text = 'Recording State: Off', bg = 'white', fg = 'red', font = 'bold')
 
 def help_view():
     filewin = tk.Toplevel()
@@ -208,16 +216,21 @@ game_frame = tk.LabelFrame(control, text = "Captura de la partida", font = 'bold
 game_frame.place(relx = 0.05, rely = 0.45, relwidth = 0.9, relheight = 0.5)
 game_frame.configure(bg = 'white')
 
+# Texto que indica el estado de grabación de la partida
+recording_label = tk.Label(game_frame, text = "Recording State: Off ")
+recording_label.place(relx = 0.1, rely = 0.1)
+recording_label.configure(bg = 'white', fg = 'red', font = 'bold')
+
 # Botón que inicia la captura de la partida de ajedrez
 cap_btn = tk.Button(game_frame, text = 'Start Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command = start)
-cap_btn.place(relx = 0.1, rely = 0.15, relwidth = 0.8, relheight = 0.2)
+cap_btn.place(relx = 0.1, rely = 0.25, relwidth = 0.8, relheight = 0.2)
 
 # Botón que finaliza la captura de la partida de ajedrez y genera un archivo txt con los movimientos en formato PGN
 fin_btn = tk.Button(game_frame, text = 'Stop Recording', bg = '#5d5e43', font = 'bold', fg = 'white', command = finish)
-fin_btn.place(relx = 0.1, rely = 0.5, relwidth = 0.8, relheight = 0.2)
+fin_btn.place(relx = 0.1, rely = 0.55, relwidth = 0.8, relheight = 0.2)
 
 # Texto que indica el estado final del programa
-pgn_label = tk.Label(game_frame, text = "PNG State: ")
+pgn_label = tk.Label(game_frame, text = "PNG State: Not saved")
 pgn_label.place(relx = 0.1, rely =0.8)
 pgn_label.configure(bg = 'white', fg = 'red', font = 'bold')
 

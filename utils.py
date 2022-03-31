@@ -64,8 +64,7 @@ def get_piece_move(pos, coord1, coord2):
     return pos, piece, move
    
 
-def update_pgn(pgn):
-	separator = '; '
-	new_pgn = pgn + separator
+def update_pgn(pgn, move):
+	new_pgn = pgn + move + " - "
 	return new_pgn
 

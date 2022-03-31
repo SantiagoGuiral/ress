@@ -28,7 +28,7 @@ def get_motion(prev_frame, frame):
 	contours, _ = cv2.findContours(dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	
 	for contour in contours:
-		if cv2.contourArea(contour) > 300:
+		if cv2.contourArea(contour) > 100:
 			motion = True
 			break
 
