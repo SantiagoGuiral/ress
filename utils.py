@@ -32,7 +32,7 @@ def get_square(wc, hc, x, y):
 
 	wc = math.ceil(wc)
 	letters = {1:'8', 2:'7', 3:'6', 4:'5', 5:'4', 6:'3', 7:'2', 8:'1'}
-	width = letters(wc, 'Not Found')
+	width = letters.get(wc, 'Not Found')
 
 	coordinate = width + height
 	return coordinate

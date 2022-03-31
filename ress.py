@@ -22,11 +22,12 @@ start_diff = False
 borders = None
 rect = None
 frame_prevdiff = None
+frame_actdiff = None
 pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff
+	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff
 	prev_frame = None
 	if cap.isOpened():
 
@@ -56,7 +57,7 @@ def show_frame():
 					coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
 					pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
 					pgn = utils.update_pgn(pgn)
-				frame_prevediff = frame
+					frame_prevediff = frame
 				start_diff = True
 
 			print(f'motion: {motion}')
