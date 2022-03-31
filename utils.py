@@ -12,7 +12,7 @@
 import math
 
 def save_pgn(txt):
-	with open ('chess-png.txt', 'w') as f:
+	with open ('chess-pgn.txt', 'w') as f:
 		f.write(txt)
 
 
@@ -64,6 +64,8 @@ def get_piece_move(pos, coord1, coord2):
     return pos, piece, move
    
 
-def convert_to_pgn(move):
-	pass
+def update_pgn(pgn):
+	separator = '; '
+	new_pgn = pgn + separator
+	return new_pgn
 

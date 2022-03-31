@@ -22,11 +22,10 @@ def difference(prev_frame, frame):
 	prev_blur = cv2.blur(prev_gray, (29, 29), 1)
 	blur = cv2.blur(gray, (29, 29), 1)
 
-	diff = cv2.asdiff(prev_blur, blur)
+	diff = cv2.absdiff(prev_blur, blur)
 	diff = cv2.dilate(diff, kernel, iterations = 2)
 
-	h, tresh = cv2.threshold(diff, 18, 255, cv2.THRESH_BINARY)
-	contours = get_contours(thresh)
+	h, thresh = cv2.threshold(diff, 18, 255, cv2.THRESH_BINARY)
 
 	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 

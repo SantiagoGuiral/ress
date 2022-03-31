@@ -11,7 +11,7 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = "video.mp4"#"http://192.168.0.5:8080/video"
+url = "pruebas/videos/video1.mp4"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
@@ -26,7 +26,7 @@ pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame, rect, borders, boardw, boardh, pos, pgn
+	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff
 	prev_frame = None
 	if cap.isOpened():
 
@@ -45,21 +45,21 @@ def show_frame():
 				start_diff = False
 
 			motion = md.get_motion(prev_frame, frame)
-			motion_cnt = 0
 			if motion == False:
-				motion_cnt += 1
-				if motion_cnt == 20:
-					frame_prevdiff = dcb.getperspective(borders, rect, boardw, boardh, frame_prevdiff)
-					frame_actdiff = dcb.getperspective(borders, rect, boardw, boardh, frame)
-					c1, c2 = diff.difference(frame_prevdiff, frame_actdiff)
-					if c1 != c2:
-						wc, hc = utils.rect_size(boardw, boardh)
-						coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
-						coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
-						pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
-						pgn += move
-					motion_cnt = 0
-					frame_prevediff = frame
+				frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
+				frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
+				c1, c2 = diff.difference(frame_prevdiff, frame_actdiff)
+				print(f'c1: {c1} c2: {c2}')
+				if c1 != c2:
+					wc, hc = utils.rect_size(boardw, boardh)
+					coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
+					coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
+					pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
+					pgn = utils.update_pgn(pgn)
+				frame_prevediff = frame
+				start_diff = True
+
+			print(f'motion: {motion}')
 
 
 		prev_frame = frame
