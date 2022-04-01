@@ -23,13 +23,15 @@ borders = None
 rect = None
 frame_prevdiff = None
 frame_actdiff = None
+previous_frame = None
+actual_frame = None
 start_count = False
 cnt_motion = 0
 pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion, start_count
+	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion, start_count, previous_frame, actual_frame
 	prev_frame = None
 	if cap.isOpened():
 
@@ -52,9 +54,10 @@ def show_frame():
 				frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
 				frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
 				movement = diff.check_difference(frame_prevdiff, frame_actdiff)
-
+				print (f'movement {movement}')
 				if movement == True:
 					start_count = True
+					previous_frame = frame_prevdiff
 
 				if start_count == True:
 					cnt_motion += 1
@@ -63,12 +66,18 @@ def show_frame():
 					start_count = False
 					cnt_motion = 0
 
-					frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
-					c1, c2, difference = diff.difference(frame_prevdiff, frame_actdiff)
+					ret, actual_frame = cap.read()
+					#previous_frame = dcb.get_perspective(borders, rect, boardw, boardh, previous_frame)
+					actual_frame = dcb.get_perspective(borders, rect, boardw, boardh, actual_frame)
+					c1, c2, difference = diff.difference(previous_frame, actual_frame)
 					print(f'c1: {c1} c2: {c2}')
 
-					plt.imshow(difference)
-					plt.savefig('diff.png')
+					plt.imshow(actual_frame)
+					plt.savefig('actual_frame.png')
+
+					plt.imshow(previous_frame)
+					plt.savefig('prev_frame.png')
+
 					wc, hc = utils.rect_size(boardw, boardh)
 					coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
 					coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
@@ -77,8 +86,7 @@ def show_frame():
 					print(f'piece: {piece} move: {move}')
 					print(f'pos dict {pos}')
 					pgn = utils.update_pgn(pgn, move)
-					frame_prevdiff = frame
-			#start_diff = True
+				frame_prevdiff = frame
 
 			print(f'motion: {motion}')
 
@@ -167,7 +175,7 @@ menubar = tk.Menu(window)
 
 menufile = tk.Menu(menubar, tearoff = 0)
 menubar.add_cascade(label = "File", menu = menufile)
-menufile.add_command(label = "Close cam", command = close_all)
+menufile.add_command(label = "Close Capture", command = close_all)
 menufile.add_command(label = "Exit", command = window.quit)
 
 helpmenu = tk.Menu(menubar, tearoff = 0)
