@@ -23,12 +23,12 @@ borders = None
 rect = None
 frame_prevdiff = None
 frame_actdiff = None
-hand = False
+cnt_motion = 0
 pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, hand
+	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion
 	prev_frame = None
 	if cap.isOpened():
 
@@ -50,20 +50,20 @@ def show_frame():
 			if motion == False:
 				frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
 				frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
-				c1, c2, hand = diff.difference(frame_prevdiff, frame_actdiff)
+				c1, c2, difference = diff.difference(frame_prevdiff, frame_actdiff)
 				print(f'c1: {c1} c2: {c2}')
-				print(f'hand: {hand}')
-				if hand == False:
+				if c1 != c2:
+					plt.imshow(difference)
+					plt.savefig('diff.png')
 					wc, hc = utils.rect_size(boardw, boardh)
-					print(f'wc {wc} hc {hc}')
 					coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
 					coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
 					print(f'coordinate 1: {coordinate1} coordinate 2: {coordinate2}')
 					pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
-					print(f'piece {piece} move {move}')
+					print(f'piece: {piece} move: {move}')
+					print(f'pos dict {pos}')
 					pgn = utils.update_pgn(pgn, move)
-					hand = True
-					start_diff = True
+				start_diff = True
 
 			print(f'motion: {motion}')
 
@@ -119,8 +119,9 @@ def finish():
 	start_detection = False
 	utils.save_pgn(pgn)
 
-	pgn_label.configure(text = "PGN State: Saved successfully")
+	pgn_label.configure(text = "PGN State: Saved successfully", bg = 'white', fg = 'green', font = 'bold')
 	recording_label.configure(text = 'Recording State: Off', bg = 'white', fg = 'red', font = 'bold')
+
 
 def help_view():
     filewin = tk.Toplevel()
@@ -141,6 +142,7 @@ def help_about():
 def close_all():
 	cap.release()	# Suelta el control del programa sobre la cámara del computador
 	cv2.destroyAllWindows()
+
 
 # ------------------------------------------------------------------------------
 # Configuración de la interfaz y asociados -------------------------------------

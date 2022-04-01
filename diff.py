@@ -50,7 +50,7 @@ def difference(prev_frame, frame):
 		c1 = (0, 0)
 		c2 = (0, 0)
 
-	return c1, c2, hand
+	return c1, c2, thresh
 
 
 def detect_hand(frame):
