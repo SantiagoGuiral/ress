@@ -23,12 +23,13 @@ borders = None
 rect = None
 frame_prevdiff = None
 frame_actdiff = None
+start_count = False
 cnt_motion = 0
 pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion
+	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion, start_count
 	prev_frame = None
 	if cap.isOpened():
 
@@ -50,9 +51,22 @@ def show_frame():
 			if motion == False:
 				frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
 				frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
-				c1, c2, difference = diff.difference(frame_prevdiff, frame_actdiff)
-				print(f'c1: {c1} c2: {c2}')
-				if c1 != c2:
+				movement = diff.check_difference(frame_prevdiff, frame_actdiff)
+
+				if movement == True:
+					start_count = True
+
+				if start_count == True:
+					cnt_motion += 1
+
+				if cnt_motion  >= 4:
+					start_count = False
+					cnt_motion = 0
+
+					frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
+					c1, c2, difference = diff.difference(frame_prevdiff, frame_actdiff)
+					print(f'c1: {c1} c2: {c2}')
+
 					plt.imshow(difference)
 					plt.savefig('diff.png')
 					wc, hc = utils.rect_size(boardw, boardh)
@@ -63,7 +77,8 @@ def show_frame():
 					print(f'piece: {piece} move: {move}')
 					print(f'pos dict {pos}')
 					pgn = utils.update_pgn(pgn, move)
-				start_diff = True
+					frame_prevdiff = frame
+			#start_diff = True
 
 			print(f'motion: {motion}')
 

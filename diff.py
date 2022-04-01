@@ -53,6 +53,31 @@ def difference(prev_frame, frame):
 	return c1, c2, thresh
 
 
+def check_difference(prev_frame, frame):
+	movement = False
+
+	kernel = np.ones((7, 7), np.uint8)
+	
+	prev_gray = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
+	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+	prev_blur = cv2.blur(prev_gray, (29, 29), 1)
+	blur = cv2.blur(gray, (29, 29), 1)
+
+	diff = cv2.absdiff(prev_blur, blur)
+	diff = cv2.dilate(diff, kernel, iterations = 2)
+
+	h, thresh = cv2.threshold(diff, 18, 255, cv2.THRESH_BINARY)
+	hand = detect_hand(thresh)	
+
+	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+	if len(contours) != 0:
+		movement = True
+
+	return movement
+
+
 def detect_hand(frame):
 	hand = False
 

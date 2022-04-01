@@ -1,0 +1,35 @@
+Bienvenidos al manual para ejecutar el programa principal y los códigos de análisis para la detección del movimiento de las piezas en una partida de ajedrez.
+
+Escrito por:
+Santiago Ríos Guiral
+santiago.riosg@udea.edu.co
+Emmanuel Gomez Ospina
+emmanuel.gomez@udea.edu.co
+
+
+
+Pasos para ejecutar los códigos de prueba.
+
+1. Instalación de las librerías necesarias para ejecutar.
+
+pip install jupyterlab (ó mediante el paquete conda tambien se puede instalar jupyter y ejecutar el notebook)
+pip install numpy
+pip install matplotlib
+pip install opencv-python
+
+De modo alterno se puede utilizar Google collab para ejecutar los archivos de análisis (notebook).
+
+2. Ejecutar el archivo principal del programa.
+
+En la consola de sistemas operatvo Linux se puede iniciar el programa con el comando:
+python ress.py
+
+En caso de utilizar el sistema oeprativo Windows se puede utilizar el entorno preferido para ejecutar código de Python o también desde la terminal.
+
+
+3. Es importante mantener el orden del directorio donde se encuentran todos los archivos para un correcto funcionamiento del programa.
+
+También es importante definir el método de captura en el programa ya que se debe hacer un cambio dentro del archivo principal ‘ress.py’. Se puede ejecutar el programa usando un video con la captura de una partida de ajedrez. La dirección de este video se especifica en la variable URL. Además se puede capturar una partida en vivo, para esto se instala la aplicación IP Webcam en un celular Android y se inicial el servidor el cual define una dirección IP que se especifica en la variable URL.
+
+Se recomienda que la captura de la partida se haga con el uso de un soporte y desde una vista vertical al tablero.
+

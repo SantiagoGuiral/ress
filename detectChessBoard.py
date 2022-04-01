@@ -81,6 +81,7 @@ def get_chessboardcoordinates(img, contours):
 		borders = order_points(borders)
 	else:
 		borders = None
+
 	return borders
 
 

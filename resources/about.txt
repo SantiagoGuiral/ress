@@ -1,9 +1,11 @@
-Register of Chess Movement
-Universidad de Antioquia
-Departamento de Electrónica y Telecomunicaciones
-Electronic ingeneering students
+Ress:
+Register of Chess Movements.
+University of Antioquia.
+Electronic and Telecommunications department.
+Medellin, Colombia.
+2022.
 
-Register of chess movements while converting the game into a PGN format
+Ress: Register and track the movement of the chess pieces on a chess game with the help of image processing techniques.
 
 Authors:
 Santiago Ríos Guiral(@SantiagoGuiral)
