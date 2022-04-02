@@ -27,11 +27,12 @@ previous_frame = None
 actual_frame = None
 start_count = False
 cnt_motion = 0
+cnt_hand = 0
 pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion, start_count, previous_frame, actual_frame
+	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion, cnt_hand, start_count, previous_frame, actual_frame
 	prev_frame = None
 	if cap.isOpened():
 
@@ -51,45 +52,47 @@ def show_frame():
 
 			motion = md.get_motion(prev_frame, frame)
 			if motion == False:
-				frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
-				frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
-				movement = diff.check_difference(frame_prevdiff, frame_actdiff)
-				print (f'movement {movement}')
-				if movement == True:
-					start_count = True
-					previous_frame = frame_prevdiff
+				cnt_hand += 1
+				if cnt_hand >=3:
+					cnt_hand = 0
 
-				if start_count == True:
-					cnt_motion += 1
+					frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
+					frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
+					movement = diff.check_difference(frame_prevdiff, frame_actdiff)
+					print (f'movement {movement}')
+					if movement == True:
+						start_count = True
+						previous_frame = frame_prevdiff
 
-				if cnt_motion  >= 4:
-					start_count = False
-					cnt_motion = 0
+					if start_count == True:
+						cnt_motion += 1
 
-					ret, actual_frame = cap.read()
-					#previous_frame = dcb.get_perspective(borders, rect, boardw, boardh, previous_frame)
-					actual_frame = dcb.get_perspective(borders, rect, boardw, boardh, actual_frame)
-					c1, c2, difference = diff.difference(previous_frame, actual_frame)
-					print(f'c1: {c1} c2: {c2}')
+					if cnt_motion  >= 3:
+						start_count = False
+						cnt_motion = 0
 
-					plt.imshow(actual_frame)
-					plt.savefig('actual_frame.png')
+						ret, actual_frame = cap.read()
+						#previous_frame = dcb.get_perspective(borders, rect, boardw, boardh, previous_frame)
+						actual_frame = dcb.get_perspective(borders, rect, boardw, boardh, actual_frame)
+						c1, c2, difference = diff.difference(previous_frame, actual_frame)
+						print(f'c1: {c1} c2: {c2}')
 
-					plt.imshow(previous_frame)
-					plt.savefig('prev_frame.png')
+						plt.imshow(actual_frame)
+						plt.savefig('actual_frame.png')
 
-					wc, hc = utils.rect_size(boardw, boardh)
-					coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
-					coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
-					print(f'coordinate 1: {coordinate1} coordinate 2: {coordinate2}')
-					pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
-					print(f'piece: {piece} move: {move}')
-					print(f'pos dict {pos}')
-					pgn = utils.update_pgn(pgn, move)
-				frame_prevdiff = frame
-
-			print(f'motion: {motion}')
-
+						plt.imshow(previous_frame)
+						plt.savefig('prev_frame.png')
+	
+						wc, hc = utils.rect_size(boardw, boardh)
+						coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
+						coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
+						print(f'coordinate 1: {coordinate1} coordinate 2: {coordinate2}')
+						pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
+						print(f'piece: {piece} move: {move}')
+						print(f'pos dict {pos}')
+						pgn = utils.update_pgn(pgn, move)
+					frame_prevdiff = frame
+			print(f'motion {motion}')
 
 		prev_frame = frame
 		# Muestra la captura de pantalla en la interfaz del programa

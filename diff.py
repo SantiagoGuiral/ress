@@ -68,8 +68,6 @@ def check_difference(prev_frame, frame):
 	diff = cv2.dilate(diff, kernel, iterations = 2)
 
 	h, thresh = cv2.threshold(diff, 18, 255, cv2.THRESH_BINARY)
-	hand = detect_hand(thresh)	
-
 	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
 	if len(contours) != 0:
