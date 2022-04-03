@@ -14,8 +14,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def difference(prev_frame, frame):
-	kernel = np.ones((7, 7), np.uint8)
-	
+	coordinates = []
+	kernel = np.ones((5, 5), np.uint8)
+
 	prev_gray = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
@@ -23,15 +24,18 @@ def difference(prev_frame, frame):
 	blur = cv2.blur(gray, (29, 29), 1)
 
 	diff = cv2.absdiff(prev_blur, blur)
-	diff = cv2.dilate(diff, kernel, iterations = 2)
+	diff = cv2.dilate(diff, kernel, iterations = 1)
 
 	h, thresh = cv2.threshold(diff, 18, 255, cv2.THRESH_BINARY)
 	hand = detect_hand(thresh)	
 
-	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+	plt.imshow(thresh)
+	plt.savefig('diff.png')
 
+	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+	list_contours = list(contours)
+	print(f'len contours {len(contours)}')
 	if len(contours) >= 2:
-		list_contours = list(contours)
 		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
 		list_contours.remove(cnt1)
 	
@@ -46,11 +50,49 @@ def difference(prev_frame, frame):
 		x2 = int(M2["m10"]/M2["m00"])
 		y2 = int(M2["m01"]/M2["m00"])
 		c2 = (x2, y2)
-	else:
-		c1 = (0, 0)
-		c2 = (0, 0)
 
-	return c1, c2, thresh
+		coordinates.append(c1)
+		coordinates.append(c2)	
+	elif len(contours) == 4:
+		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
+		list_contours.remove(cnt1)
+	
+		cnt2 = max(list_contours, key = lambda x: cv2.contourArea(x))
+		list_contours.remove(cnt2)
+
+		cnt3 = max(list_contours, key = lambda x: cv2.contourArea(x))
+		list_contours.remove(cnt3)
+	
+		cnt4 = max(list_contours, key = lambda x: cv2.contourArea(x))
+
+		M1 = cv2.moments(cnt1)
+		x1 = int(M1["m10"]/M1["m00"])
+		y1 = int(M1["m01"]/M1["m00"])
+		c1 = (x1, y1)
+
+		M2 = cv2.moments(cnt2)
+		x2 = int(M2["m10"]/M2["m00"])
+		y2 = int(M2["m01"]/M2["m00"])
+		c2 = (x2, y2)
+
+		M3 = cv2.moments(cnt3)
+		x3 = int(M3["m10"]/M3["m00"])
+		y3 = int(M3["m01"]/M3["m00"])
+		c3 = (x3, y3)
+
+		M4 = cv2.moments(cnt4)
+		x4 = int(M4["m10"]/M4["m00"])
+		y4 = int(M4["m01"]/M4["m00"])
+		c4 = (x4, y4)
+
+		coordinates.append(c1)
+		coordinates.append(c2)
+		coordinates.append(c3)
+		coordinates.append(c4)
+	else:
+		coordinates.append((0, 0))
+
+	return coordinates
 
 
 def check_difference(prev_frame, frame):

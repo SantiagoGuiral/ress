@@ -22,7 +22,19 @@ def rect_size(w, h):
 	return wc, hc
 
 
-def get_square(wc, hc, x, y):
+def get_square(wc, hc, coordinates):
+	ids = []
+	for coordinate in coordinates:
+		square_id = get_square_id(wc, hc, coordinate)
+		ids.append(square_id)
+	
+	return ids
+
+
+def get_square_id(wc, hc, coordinate):
+
+	x = coordinate[0]
+	y = coordinate[1]
 	hc = y / hc
 	wc = x / wc
 
@@ -43,25 +55,74 @@ def initial_position():
 	return pos
 
 
-def get_piece_move(pos, coord1, coord2):
-    piece = ''
-    following = ''
-    actual = ''
-    for key, value in pos.items():
-        if coord1 == value[1]:
-            piece = key
-            actual = coord1
-            following = coord2
-            break
-        if coord2 == value[1]:
-            piece = key
-            actual = coord2
-            following = coord1
-            break
-    
-    move = actual + piece + following
-    pos[piece] = [actual, following]
-    return pos, piece, move
+def get_piece_move(pos, coordinates):
+	piece = ''
+	following = ''
+	actual = ''
+
+	if len(coordinates) == 2:
+		coord1 = coordinates[0]
+		coord2 = coordinates[1]
+		for key, value in pos.items():
+			if coord1 == value[1]:
+				piece = key
+				actual = coord1
+				following = coord2
+				break
+			if coord2 == value[1]:
+				piece = key
+				actual = coord2
+				following = coord1
+				break
+		move = actual + piece + following
+
+		for key, value in pos.items():
+			if following == value[1]:
+				move = 'X' + move
+				break
+		pos[piece] = [actual, following]		
+	elif len(coordinates) == 4:
+		for coord in coordinates:
+			if coord[0] == 'g1' or coord[1] == 'g1':
+				move = 'OO'
+				pos['K'] = ['e1', 'g1']
+				pos['RR'] = ['h1', 'f1']
+				break
+			elif coord[0] == 'c1' or coord[1] == 'c1':
+				move = 'OOO'
+				pos['K'] = ['e1', 'c1']
+				pos['RL'] = ['a1', 'd1']
+				break
+			elif coord[0] == 'g8' or coord[1] == 'g8':
+				move = 'oo'
+				pos['k'] = ['e8', 'g8']
+				pos['rr'] = ['h8', 'f8']
+				break
+			elif coord[0] == 'c8' or coord[1] == 'c8':
+				move = 'ooo'
+				pos['k'] = ['e8', 'c8']
+				pos['rl'] = ['a8', 'd8']
+				break
+		piece = 'Castle'
+	elif len(coordinates) == 3:
+		for coord in coordinates:
+			if coord[1] == '6':
+				following = coord
+				break
+			elif coord[1] == '3':
+				following = coord
+				break
+		for coord in coordinates:
+			if coord[0] != following[0]:
+				actual = coord
+				break
+		for key, value in pos.item():
+			if actual == value[1]:
+				piece = key
+				break
+		pos[piece] = [actual, following]
+
+	return pos, piece, move
    
 
 def update_pgn(pgn, move):

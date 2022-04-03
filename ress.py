@@ -11,7 +11,7 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = "pruebas/videos/video1.mp4"
+url = "pruebas/videos/video3.mp4"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
@@ -53,7 +53,7 @@ def show_frame():
 			motion = md.get_motion(prev_frame, frame)
 			if motion == False:
 				cnt_hand += 1
-				if cnt_hand >=3:
+				if cnt_hand >= 3:
 					cnt_hand = 0
 
 					frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
@@ -72,22 +72,13 @@ def show_frame():
 						cnt_motion = 0
 
 						ret, actual_frame = cap.read()
-						#previous_frame = dcb.get_perspective(borders, rect, boardw, boardh, previous_frame)
 						actual_frame = dcb.get_perspective(borders, rect, boardw, boardh, actual_frame)
-						c1, c2, difference = diff.difference(previous_frame, actual_frame)
-						print(f'c1: {c1} c2: {c2}')
-
-						plt.imshow(actual_frame)
-						plt.savefig('actual_frame.png')
-
-						plt.imshow(previous_frame)
-						plt.savefig('prev_frame.png')
-	
+						coordinates = diff.difference(previous_frame, actual_frame)
+						print(f'coordinates: {coordinates}')
 						wc, hc = utils.rect_size(boardw, boardh)
-						coordinate1 = utils.get_square(wc, hc, c1[0], c1[1])
-						coordinate2 = utils.get_square(wc, hc, c2[0], c2[1])
-						print(f'coordinate 1: {coordinate1} coordinate 2: {coordinate2}')
-						pos, piece, move = utils.get_piece_move(pos, coordinate1, coordinate2)
+						coordinate = utils.get_square(wc, hc, coordinates)
+						print(f'coordinate: {coordinate}')
+						pos, piece, move = utils.get_piece_move(pos, coordinate)
 						print(f'piece: {piece} move: {move}')
 						print(f'pos dict {pos}')
 						pgn = utils.update_pgn(pgn, move)
@@ -117,16 +108,13 @@ def recognize_board(cframe):
 	borders = dcb.get_chessboardcoordinates(image2, contours)
 
 	if borders == None:
-		state_label.configure(text = "State: Not Succesful")
+		state_label.configure(text = "State: Not Succesful", bg = 'white', fg = 'red', font = 'bold')
 	else:
 		if (len(borders) == 4 and len(rect) == 4):
 			board = dcb.get_perspective(borders, rect, boardw, boardh, cframe)
 			state_label.configure(text = "State: Succesful", bg = 'white', fg = 'green', font = 'bold')
-
-			plt.imshow(board)
-			plt.savefig('board.png')
 			print(f'borders cv2: {borders}')
-			print(f'rect {rect}')
+			print(f'rectangle: {rect}')
 
 		else:
 			state_label.configure(text = "State: Not Succesful", bg = 'white', fg = 'red', font = 'bold')
