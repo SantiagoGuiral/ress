@@ -11,7 +11,7 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = "pruebas/videos/video3.mp4"
+url = "pruebas/videos/video6.mp4"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
@@ -28,11 +28,12 @@ actual_frame = None
 start_count = False
 cnt_motion = 0
 cnt_hand = 0
+cnt_moves = 0
 pos = utils.initial_position()
 pgn = ""
 
 def show_frame():
-	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion, cnt_hand, start_count, previous_frame, actual_frame
+	global frame, rect, borders, boardw, boardh, pos, pgn, start_diff, frame_prevdiff, frame_actdiff, cnt_motion, cnt_hand, start_count, previous_frame, actual_frame, cnt_moves
 	prev_frame = None
 	if cap.isOpened():
 
@@ -67,18 +68,17 @@ def show_frame():
 					if start_count == True:
 						cnt_motion += 1
 
-					if cnt_motion  >= 3:
+					if cnt_motion  >= 4:
 						start_count = False
 						cnt_motion = 0
+						cnt_moves += 1
 
 						ret, actual_frame = cap.read()
 						actual_frame = dcb.get_perspective(borders, rect, boardw, boardh, actual_frame)
 						coordinates = diff.difference(previous_frame, actual_frame)
-						print(f'coordinates: {coordinates}')
 						wc, hc = utils.rect_size(boardw, boardh)
 						coordinate = utils.get_square(wc, hc, coordinates)
-						print(f'coordinate: {coordinate}')
-						pos, piece, move = utils.get_piece_move(pos, coordinate)
+						pos, piece, move = utils.get_piece_move(pos, coordinate, cnt_moves)
 						print(f'piece: {piece} move: {move}')
 						print(f'pos dict {pos}')
 						pgn = utils.update_pgn(pgn, move)

@@ -55,32 +55,61 @@ def initial_position():
 	return pos
 
 
-def get_piece_move(pos, coordinates):
+def get_piece_move(pos, coordinates, cnt_moves):
 	piece = ''
 	following = ''
 	actual = ''
+	capture = 0
 
 	if len(coordinates) == 2:
 		coord1 = coordinates[0]
 		coord2 = coordinates[1]
-		for key, value in pos.items():
-			if coord1 == value[1]:
-				piece = key
-				actual = coord1
-				following = coord2
-				break
-			if coord2 == value[1]:
-				piece = key
-				actual = coord2
-				following = coord1
-				break
-		move = actual + piece + following
 
 		for key, value in pos.items():
-			if following == value[1]:
-				move = 'X' + move
-				break
-		pos[piece] = [actual, following]		
+			if coord1 == value[1] or coord2 == value[1]:
+				capture += 1
+		
+		if capture == 1:
+			for key, value in pos.items():
+				if coord1 == value[1]:
+					piece = key
+					actual = coord1
+					following = coord2
+					break
+				if coord2 == value[1]:
+					piece = key
+					actual = coord2
+					following = coord1
+					break
+			move = actual + piece + following
+			pos[piece] = [actual, following]		
+		else:
+			for key, value in pos.items():
+				if cnt_moves % 2 != 0 and key.isupper():
+					if coord1 == value[1]:
+						piece = key
+						actual = coord1
+						following = coord2
+						break
+				if coord2 == value[1]:
+					piece = key
+					actual = coord2
+					following = coord1
+						break
+				else:
+					if coord1 == value[1]:
+						piece = key
+						actual = coord1
+						following = coord2
+						break
+					if coord2 == value[1]:
+						piece = key
+						actual = coord2
+						following = coord1
+						break
+			move = 'X' +  actual + piece + following
+			pos[piece] = [actual, following]	
+
 	elif len(coordinates) == 4:
 		for coord in coordinates:
 			if coord[0] == 'g1' or coord[1] == 'g1':
@@ -104,6 +133,7 @@ def get_piece_move(pos, coordinates):
 				pos['rl'] = ['a8', 'd8']
 				break
 		piece = 'Castle'
+
 	elif len(coordinates) == 3:
 		for coord in coordinates:
 			if coord[1] == '6':
@@ -123,7 +153,7 @@ def get_piece_move(pos, coordinates):
 		pos[piece] = [actual, following]
 
 	return pos, piece, move
-   
+
 
 def update_pgn(pgn, move):
 	new_pgn = pgn + move + " - "
