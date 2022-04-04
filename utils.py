@@ -60,32 +60,19 @@ def get_piece_move(pos, coordinates, cnt_moves):
 	following = ''
 	actual = ''
 	capture = 0
+	move = ''
+	paso = ''
 
 	if len(coordinates) == 2:
 		coord1 = coordinates[0]
 		coord2 = coordinates[1]
 
-	for key, value in pos.items():
-		if coord1 == value[1] or coord2 == value[1]:
-			capture += 1
+		for key, value in pos.items():
+			if coord1 == value[1] or coord2 == value[1]:
+				capture += 1
 
-	if capture == 1:
-		for key, value in pos.items():
-			if coord1 == value[1]:
-				piece = key
-				actual = coord1
-				following = coord2
-				break
-			if coord2 == value[1]:
-				piece = key
-				actual = coord2
-				following = coord1
-				break
-		move = actual + piece + following
-		pos[piece] = [actual, following]		
-	else:
-		for key, value in pos.items():
-			if cnt_moves % 2 != 0 and key.isupper():
+		if capture == 1:
+			for key, value in pos.items():
 				if coord1 == value[1]:
 					piece = key
 					actual = coord1
@@ -96,44 +83,59 @@ def get_piece_move(pos, coordinates, cnt_moves):
 					actual = coord2
 					following = coord1
 					break
-			elif cnt_moves % 2 == 0 and key.islower():
-				if coord1 == value[1]:
-					piece = key
-					actual = coord1
-					following = coord2
-					break
-				if coord2 == value[1]:
-					piece = key
-					actual = coord2
-					following = coord1
+			move = actual + piece + following
+			pos[piece] = [actual, following]		
+		else:
+			for key, value in pos.items():
+				if cnt_moves % 2 != 0 and key.isupper():
+					if coord1 == value[1]:
+						piece = key
+						actual = coord1
+						following = coord2
+						break
+					if coord2 == value[1]:
+						piece = key
+						actual = coord2
+						following = coord1
+						break
+				elif cnt_moves % 2 == 0 and key.islower():
+					if coord1 == value[1]:
+						piece = key
+						actual = coord1
+						following = coord2
+						break
+					if coord2 == value[1]:
+						piece = key
+						actual = coord2
+						following = coord1
+						break
+
+			for key, value in pos.items():
+				if following == value[1]:
+					pos[key] = [value[1], '.']
 					break
 
-		for key, value in pos.items():
-			if following == value[1]:
-				pos[key] = [value[1], '.']
-				break
-
-		move = 'X' +  actual + piece + following
-		pos[piece] = [actual, following]	
+			move = 'X' +  actual + piece + following
+			pos[piece] = [actual, following]	
 
 	elif len(coordinates) == 4:
 		for coord in coordinates:
-			if coord[0] == 'g1' or coord[1] == 'g1':
+			if coord == 'g1':
 				move = 'OO'
 				pos['K'] = ['e1', 'g1']
 				pos['RR'] = ['h1', 'f1']
 				break
-			elif coord[0] == 'c1' or coord[1] == 'c1':
+			elif coord == 'c1':
 				move = 'OOO'
 				pos['K'] = ['e1', 'c1']
 				pos['RL'] = ['a1', 'd1']
 				break
-			elif coord[0] == 'g8' or coord[1] == 'g8':
+			elif coord == 'g8':
 				move = 'oo'
 				pos['k'] = ['e8', 'g8']
 				pos['rr'] = ['h8', 'f8']
 				break
-			elif coord[0] == 'c8' or coord[1] == 'c8':
+			elif coord == 'c8':
 				move = 'ooo'
 				pos['k'] = ['e8', 'c8']
 				pos['rl'] = ['a8', 'd8']
@@ -151,12 +153,18 @@ def get_piece_move(pos, coordinates, cnt_moves):
 		for coord in coordinates:
 			if coord[0] != following[0]:
 				actual = coord
-				break
-		for key, value in pos.item():
+			elif coord[0] == following [0] and coord[1] != following[1]:
+				paso = coord
+		for key, value in pos.items():
 			if actual == value[1]:
 				piece = key
 				break
+		for key,value in pos.items():
+			if paso == value[1]:
+				pos[key] = [value[1], '.']
+
 		pos[piece] = [actual, following]
+		move = 'X' + actual + piece + following
 
 	return pos, piece, move
 
