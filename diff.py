@@ -35,9 +35,9 @@ def difference(prev_frame, frame):
 	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	list_contours = list(contours)
 	print(f'len contours {len(contours)}')
-	if len(contours) >= 2:
+	if len(contours) == 2:
 		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.remove(cnt1)
+		list_contours.pop(cnt1)
 	
 		cnt2 = max(list_contours, key = lambda x: cv2.contourArea(x))
 	
@@ -55,13 +55,13 @@ def difference(prev_frame, frame):
 		coordinates.append(c2)	
 	elif len(contours) == 4:
 		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.remove(cnt1)
+		list_contours.pop(cnt1)
 	
 		cnt2 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.remove(cnt2)
+		list_contours.pop(cnt2)
 
 		cnt3 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.remove(cnt3)
+		list_contours.pop(cnt3)
 	
 		cnt4 = max(list_contours, key = lambda x: cv2.contourArea(x))
 
@@ -89,6 +89,34 @@ def difference(prev_frame, frame):
 		coordinates.append(c2)
 		coordinates.append(c3)
 		coordinates.append(c4)
+	elif len(contours) == 3:
+		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
+		list_contours.pop(cnt1)
+	
+		cnt2 = max(list_contours, key = lambda x: cv2.contourArea(x))
+		list_contours.pop(cnt2)
+
+		cnt3 = max(list_contours, key = lambda x: cv2.contourArea(x))
+
+		M1 = cv2.moments(cnt1)
+		x1 = int(M1["m10"]/M1["m00"])
+		y1 = int(M1["m01"]/M1["m00"])
+		c1 = (x1, y1)
+
+		M2 = cv2.moments(cnt2)
+		x2 = int(M2["m10"]/M2["m00"])
+		y2 = int(M2["m01"]/M2["m00"])
+		c2 = (x2, y2)
+
+		M3 = cv2.moments(cnt3)
+		x3 = int(M3["m10"]/M3["m00"])
+		y3 = int(M3["m01"]/M3["m00"])
+		c3 = (x3, y3)
+
+		coordinates.append(c1)
+		coordinates.append(c2)
+		coordinates.append(c3)
+	
 	else:
 		coordinates.append((0, 0))
 
