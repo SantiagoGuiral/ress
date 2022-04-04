@@ -65,12 +65,27 @@ def get_piece_move(pos, coordinates, cnt_moves):
 		coord1 = coordinates[0]
 		coord2 = coordinates[1]
 
+	for key, value in pos.items():
+		if coord1 == value[1] or coord2 == value[1]:
+			capture += 1
+
+	if capture == 1:
 		for key, value in pos.items():
-			if coord1 == value[1] or coord2 == value[1]:
-				capture += 1
-		
-		if capture == 1:
-			for key, value in pos.items():
+			if coord1 == value[1]:
+				piece = key
+				actual = coord1
+				following = coord2
+				break
+			if coord2 == value[1]:
+				piece = key
+				actual = coord2
+				following = coord1
+				break
+		move = actual + piece + following
+		pos[piece] = [actual, following]		
+	else:
+		for key, value in pos.items():
+			if cnt_moves % 2 != 0 and key.isupper():
 				if coord1 == value[1]:
 					piece = key
 					actual = coord1
@@ -81,34 +96,25 @@ def get_piece_move(pos, coordinates, cnt_moves):
 					actual = coord2
 					following = coord1
 					break
-			move = actual + piece + following
-			pos[piece] = [actual, following]		
-		else:
-			for key, value in pos.items():
-				if cnt_moves % 2 != 0 and key.isupper():
-					if coord1 == value[1]:
-						piece = key
-						actual = coord1
-						following = coord2
-						break
+			elif cnt_moves % 2 == 0 and key.islower():
+				if coord1 == value[1]:
+					piece = key
+					actual = coord1
+					following = coord2
+					break
 				if coord2 == value[1]:
 					piece = key
 					actual = coord2
 					following = coord1
-						break
-				else:
-					if coord1 == value[1]:
-						piece = key
-						actual = coord1
-						following = coord2
-						break
-					if coord2 == value[1]:
-						piece = key
-						actual = coord2
-						following = coord1
-						break
-			move = 'X' +  actual + piece + following
-			pos[piece] = [actual, following]	
+					break
+
+		for key, value in pos.items():
+			if following == value[1]:
+				pos[key] = [value[1], '.']
+				break
+
+		move = 'X' +  actual + piece + following
+		pos[piece] = [actual, following]	
 
 	elif len(coordinates) == 4:
 		for coord in coordinates:
