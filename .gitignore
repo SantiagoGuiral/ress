@@ -11,3 +11,5 @@ pruebas/p/*
 pruebas/videos/
 pruebas/videos/*
 *.png
+video/*
+video/

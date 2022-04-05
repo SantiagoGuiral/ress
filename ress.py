@@ -11,7 +11,7 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = "pruebas/videos/video25.mp4"
+url = "video/video23.mp4"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
@@ -219,7 +219,7 @@ control.configure(bg = 'white')
 
 # --------------------- Sección: Reconocimiento del tablero -------------------#
 
-recognize_frame = tk.LabelFrame(control, text = "Reconocimiento del tablero", font = 'bold')
+recognize_frame = tk.LabelFrame(control, text = "Recognition of the Chessboard", font = 'bold')
 recognize_frame.place(relx = 0.05, rely = 0.05, relwidth = 0.9, relheight = 0.35)
 recognize_frame.configure(bg = 'white')
 
@@ -234,7 +234,7 @@ state_label.configure(bg = 'white', fg = 'red', font = 'bold')
 
 # --------------------- Sección: Control de la partida ------------------------#
 
-game_frame = tk.LabelFrame(control, text = "Captura de la partida", font = 'bold')
+game_frame = tk.LabelFrame(control, text = "Chess Game Capture", font = 'bold')
 game_frame.place(relx = 0.05, rely = 0.45, relwidth = 0.9, relheight = 0.5)
 game_frame.configure(bg = 'white')
 
