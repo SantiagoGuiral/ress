@@ -1,3 +1,4 @@
+def println(t): print(t+"\n"); return 0;
 def start_read(source_file):
     with open(source_file,"r") as f:
         record=f.read()
@@ -21,6 +22,9 @@ def move(m):
             piece=m[3:-2]
             capture=1
         #rendering the move:
+        print(piece)
+        print(past)
+        print(present)
         pt=piece[0] #piece type
         if(pt.lower()=="p"):
             M=f"{past[0]}x{present}" if(capture) else f"{present}"
@@ -32,6 +36,7 @@ def move(m):
 def decode_stringhistory(record):
     #orders moves
     record_listed=record.split(" - ")
+    print(record_listed)
     record_listed[-1]=record_listed[-1][:-1]
     if(record_listed[-1]==""):
         record_listed.pop()
@@ -41,34 +46,41 @@ def decode_stringhistory(record):
         Blackstate=i%2
         if(not Blackstate):
             record_ordered+=f"{iteration}. "
+        println("move: "+m)
         processed_move=move(m)
         record_ordered+=f"{processed_move} " #move
+        println(record_ordered)
     return record_ordered
 
-def to_pgn():
-    #moves source file
-    source="chess-pgn.txt"
-    #record
-    record=start_read(source)
-    PGNrecord="""[Event "Hoogovens Group A"]
-    [Site "Wijk aan Zee NED"]
-    [Date "1999.01.20"]
-    [EventDate "1999.01.16"]
-    [Round "4"]
-    [Result "1-0"]
-    [White "Garry Kasparov"]
-    [Black "Veselin Topalov"]
-    [ECO "B07"]
-    [WhiteElo "2812"]
-    [BlackElo "2700"]
-    [PlyCount "87"]
 
-    """
-    result=decode_stringhistory(record)
-    PGNrecord+=result
-    import time
-    timestr = time.strftime("%H:%M:%S-%d+%m+%y")
-    fname=f"PGN{timestr}.txt"
-    with open(fname,"w+") as f:
-        f.write(PGNrecord)
-    return 0
+#moves source file
+source="chess-pgn.txt"
+#record
+record=start_read(source)
+PGNrecord="""
+[Event "Hoogovens Group A"]
+[Site "Wijk aan Zee NED"]
+[Date "1999.01.20"]
+[EventDate "1999.01.16"]
+[Round "4"]
+[Result "1-0"]
+[White "Garry Kasparov"]
+[Black "Veselin Topalov"]
+[ECO "B07"]
+[WhiteElo "2812"]
+[BlackElo "2700"]
+[PlyCount "87"]
+
+"""
+result=decode_stringhistory(record)
+PGNrecord+=result
+print(PGNrecord)
+
+
+
+
+
+
+
+
+
