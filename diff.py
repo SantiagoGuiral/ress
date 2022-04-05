@@ -29,15 +29,16 @@ def difference(prev_frame, frame):
 	h, thresh = cv2.threshold(diff, 18, 255, cv2.THRESH_BINARY)
 	hand = detect_hand(thresh)	
 
-	plt.imshow(thresh)
-	plt.savefig('diff.png')
+	thresh = cv2.erode(thresh, kernel, iterations = 3)
+	thresh = cv2.dilate(thresh, kernel, iterations = 3)
 
 	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	list_contours = list(contours)
-	print(f'len contours {len(contours)}')
-	if len(contours) == 2:
+
+	print(f'len contours {len(list_contours)}')
+	if len(list_contours) == 2 or len(list_contours) == 3:
 		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.pop(cnt1)
+		list_contours.remove(cnt1)
 	
 		cnt2 = max(list_contours, key = lambda x: cv2.contourArea(x))
 	
@@ -53,15 +54,15 @@ def difference(prev_frame, frame):
 
 		coordinates.append(c1)
 		coordinates.append(c2)	
-	elif len(contours) == 4:
+	elif len(list_contours) >= 4:
 		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.pop(cnt1)
+		list_contours.remove(cnt1)
 	
 		cnt2 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.pop(cnt2)
+		list_contours.remove(cnt2)
 
 		cnt3 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.pop(cnt3)
+		list_contours.remove(cnt3)
 	
 		cnt4 = max(list_contours, key = lambda x: cv2.contourArea(x))
 
@@ -89,12 +90,12 @@ def difference(prev_frame, frame):
 		coordinates.append(c2)
 		coordinates.append(c3)
 		coordinates.append(c4)
-	elif len(contours) == 3:
+	elif len(list_contours) == 3:
 		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.pop(cnt1)
+		list_contours.remove(cnt1)
 	
 		cnt2 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.pop(cnt2)
+		list_contours.remove(cnt2)
 
 		cnt3 = max(list_contours, key = lambda x: cv2.contourArea(x))
 

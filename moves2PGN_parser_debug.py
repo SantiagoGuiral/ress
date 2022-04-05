@@ -22,6 +22,9 @@ def move(m):
             piece=m[3:-2]
             capture=1
         #rendering the move:
+        print(piece)
+        print(past)
+        print(present)
         pt=piece[0] #piece type
         if(pt.lower()=="p"):
             M=f"{past[0]}x{present}" if(capture) else f"{present}"
@@ -33,6 +36,7 @@ def move(m):
 def decode_stringhistory(record):
     #orders moves
     record_listed=record.split(" - ")
+    print(record_listed)
     record_listed[-1]=record_listed[-1][:-1]
     if(record_listed[-1]==""):
         record_listed.pop()
@@ -42,8 +46,10 @@ def decode_stringhistory(record):
         Blackstate=i%2
         if(not Blackstate):
             record_ordered+=f"{iteration}. "
+        println("move: "+m)
         processed_move=move(m)
         record_ordered+=f"{processed_move} " #move
+        println(record_ordered)
     return record_ordered
 
 
@@ -51,7 +57,8 @@ def decode_stringhistory(record):
 source="chess-pgn.txt"
 #record
 record=start_read(source)
-PGNrecord="""[Event "Hoogovens Group A"]
+PGNrecord="""
+[Event "Hoogovens Group A"]
 [Site "Wijk aan Zee NED"]
 [Date "1999.01.20"]
 [EventDate "1999.01.16"]

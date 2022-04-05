@@ -11,7 +11,7 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = "pruebas/videos/video6.mp4"
+url = "pruebas/videos/video23.mp4"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
@@ -75,8 +75,8 @@ def show_frame():
 
 						ret, actual_frame = cap.read()
 						actual_frame = dcb.get_perspective(borders, rect, boardw, boardh, actual_frame)
-						coordinates = diff.difference(previous_frame, actual_frame)
 						wc, hc = utils.rect_size(boardw, boardh)
+						coordinates = diff.difference(previous_frame, actual_frame)
 						coordinate = utils.get_square(wc, hc, coordinates)
 						pos, piece, move = utils.get_piece_move(pos, coordinate, cnt_moves)
 						print(f'piece: {piece} move: {move}')
