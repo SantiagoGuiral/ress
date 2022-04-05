@@ -11,7 +11,7 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = "pruebas/videos/video23.mp4"
+url = "pruebas/videos/video25.mp4"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
@@ -60,7 +60,7 @@ def show_frame():
 					frame_prevdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame_prevdiff)
 					frame_actdiff = dcb.get_perspective(borders, rect, boardw, boardh, frame)
 					movement = diff.check_difference(frame_prevdiff, frame_actdiff)
-					print (f'movement {movement}')
+					#print (f'movement {movement}')
 					if movement == True:
 						start_count = True
 						previous_frame = frame_prevdiff
@@ -83,7 +83,7 @@ def show_frame():
 						print(f'pos dict {pos}')
 						pgn = utils.update_pgn(pgn, move)
 					frame_prevdiff = frame
-			print(f'motion {motion}')
+			#print(f'motion {motion}')
 
 		prev_frame = frame
 		# Muestra la captura de pantalla en la interfaz del programa
