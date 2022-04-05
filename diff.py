@@ -35,7 +35,6 @@ def difference(prev_frame, frame):
 	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 	list_contours = list(contours)
 
-	print(f'len contours {len(list_contours)}')
 	if len(list_contours) == 2 or len(list_contours) == 3:
 		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
 		list_contours.remove(cnt1)

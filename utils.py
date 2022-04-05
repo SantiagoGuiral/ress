@@ -10,10 +10,12 @@
 """
 
 import math
+import move2PGN_parser as pgn
 
 def save_pgn(txt):
 	with open ('chess-pgn.txt', 'w') as f:
 		f.write(txt)
+	#pgn.to_pgn()
 
 
 def rect_size(w, h):
