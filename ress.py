@@ -195,10 +195,16 @@ main = tk.Frame(window)
 main.place(relx = 0, rely = 0, relwidth = 1, relheight = 1)
 main.configure(bg = 'white')
 
+# ---------------------- Sección: Título del programa -------------------------#
+
+title_label = tk.Label(main, text = "Register of Chess Movements")
+title_label.place(relx = 0.5, rely = 0.05, anchor = 'center')
+title_label.configure(bg = 'white', fg = 'black', font = ("Arial", 25))
+
 # ---------------------- Sección: Captura de video ----------------------------#
 
 video = tk.LabelFrame(main, text = 'Game', font = 'hold')
-video.place(relx = 0.01, rely = 0.05, relwidth = 0.58, relheight = 0.9)
+video.place(relx = 0.01, rely = 0.1, relwidth = 0.58, relheight = 0.85)
 video.configure(bg = 'white')
 
 # Ventana con la captura de video
@@ -208,7 +214,7 @@ framecap.grid(row = 0, column = 0, padx = 24, pady = 100)
 # --------------------- Sección: Control del programa -------------------------#
 
 control = tk.LabelFrame(main, text = 'Control', font = 'bold')
-control.place(relx = 0.61, rely = 0.05, relwidth = 0.38, relheight = 0.9)
+control.place(relx = 0.61, rely = 0.1, relwidth = 0.38, relheight = 0.85)
 control.configure(bg = 'white')
 
 # --------------------- Sección: Reconocimiento del tablero -------------------#
