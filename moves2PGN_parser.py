@@ -51,16 +51,16 @@ def to_pgn():
     #record
     record=start_read(source)
     PGNrecord="""[Event "Hoogovens Group A"]
-    [Site "Wijk aan Zee NED"]
-    [Date "1999.01.20"]
-    [EventDate "1999.01.16"]
-    [Round "4"]
+    [Site "Universidad de Antioquia"]
+    [Date "2022.04.06"]
+    [EventDate "2022.04.06"]
+    [Round "1"]
     [Result "1-0"]
-    [White "Garry Kasparov"]
-    [Black "Veselin Topalov"]
+    [White "Paul Morphy"]
+    [Black "Duke Karl"]
     [ECO "B07"]
-    [WhiteElo "2812"]
-    [BlackElo "2700"]
+    [WhiteElo "3000"]
+    [BlackElo "3000"]
     [PlyCount "87"]
 
     """
