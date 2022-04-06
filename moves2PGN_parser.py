@@ -50,18 +50,18 @@ def to_pgn():
     source="chess-pgn.txt"
     #record
     record=start_read(source)
-    PGNrecord="""[Event "Hoogovens Group A"]
+    PGNrecord="""[Event "PDI Final project"]
     [Site "Universidad de Antioquia"]
     [Date "2022.04.06"]
     [EventDate "2022.04.06"]
     [Round "1"]
     [Result "1-0"]
-    [White "Paul Morphy"]
-    [Black "Duke Karl"]
-    [ECO "B07"]
+    [White "Garry Kasparov"]
+    [Black "Veselin Topalov"]
+    [ECO "B01"]
     [WhiteElo "3000"]
     [BlackElo "3000"]
-    [PlyCount "87"]
+    [PlyCount "18"]
 
     """
     result=decode_stringhistory(record)

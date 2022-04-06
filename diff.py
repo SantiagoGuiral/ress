@@ -37,8 +37,16 @@ def difference(prev_frame, frame):
 
 	if len(list_contours) == 2 or len(list_contours) == 3:
 		cnt1 = max(list_contours, key = lambda x: cv2.contourArea(x))
-		list_contours.remove(cnt1)
-	
+		#list_contours.remove(cnt1)
+		for i in range(len(list_contours)):
+			try:
+				if (cnt1 == list_contours[i]).all():
+					break
+			except:
+				if (cnt1 == list_contours[i]):
+					break	
+		del list_contours[i]
+
 		cnt2 = max(list_contours, key = lambda x: cv2.contourArea(x))
 	
 		M1 = cv2.moments(cnt1)
