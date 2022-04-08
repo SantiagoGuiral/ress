@@ -1,0 +1,14 @@
+[Event "PDI Final project"]
+	[Site "Universidad de Antioquia"]
+	[Date "2022.04.06"]
+	[EventDate "2022.04.06"]
+	[Round "1"]
+	[Result "1-0"]
+	[White "Garry Kasparov"]
+	[Black "Veselin Topalov"]
+	[ECO "B01"]
+	[WhiteElo "3000"]
+	[BlackElo "3000"]
+	[PlyCount "18"]
+
+	1. e4 d6 2. d4 Ng8f6 3. Nb1c3 g6 4. Bc1e3 Bf8g7 5. Qd1d2 c6 6. f3 b5 7. Ng1e2 Nb8d7 8. Be3h6 Bg7xh6 9. Qd2xh6 Bc8b7 

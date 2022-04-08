@@ -117,6 +117,7 @@ def recognize_board(cframe):
 	global board, rect, borders, boardw, boardh, board_recognized
 	board_recognized = True
 	capture_frame = cframe.copy()
+
 	image1 = dcb.get_chessboardborders(capture_frame) # Obtiene la imágen con los bordes de la captura usando Canny
 	contour = dcb.get_chessboardcontour(image1) # Obtiene el contorno de mayor tamaño correspondiente al tablero de ajedrez
 	rect, boardw, boardh = dcb.get_chessboardrect(contour) # Obtiene el tamaño idal del tablero para obtener su perspectiva vertical
