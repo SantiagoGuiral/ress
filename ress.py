@@ -164,21 +164,21 @@ def finish():
 def help_view():
 	""" Ventana desplegable con la ayuda para manejar el programa.
 	"""
-    filewin = tk.Toplevel()
-    filewin.title("Help")
-    with open("./resources/help.txt",'r') as f:
-        about_text = f.read()
-        l = tk.Label(filewin, text = about_text, justify = "left").pack(padx = 8, pady = 8, fill = 'both', expand = True)
+	filewin = tk.Toplevel()
+	filewin.title("Help")
+	with open("./resources/help.txt",'r') as f:
+		about_text = f.read()
+		l = tk.Label(filewin, text = about_text, justify = "left").pack(padx = 8, pady = 8, fill = 'both', expand = True)
 
 
 def help_about():
 	"""Ventana desplegable con información de interes.
 	"""
-    filewin = tk.Toplevel()
-    filewin.title("About")
-    with open("./resources/about.txt",'r') as f:
-        about_text = f.read()
-        l = tk.Label(filewin, text = about_text, justify = "center").pack(padx = 8,pady = 8, fill = 'both', expand = True)
+	filewin = tk.Toplevel()
+	filewin.title("About")
+	with open("./resources/about.txt",'r') as f:
+		about_text = f.read()
+		l = tk.Label(filewin, text = about_text, justify = "center").pack(padx = 8,pady = 8, fill = 'both', expand = True)
 
 
 def close_all():

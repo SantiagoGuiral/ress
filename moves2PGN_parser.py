@@ -13,16 +13,13 @@
 def start_read(source_file):
 	"""Obtiene el historial de movimientos de la partida de ajedrez y lo guarda en una cadena de caracteres.
 	"""
-    with open(source_file,"r") as f:
-        record=f.read()
-        return record
+	with open(source_file,"r") as f:
+		record = f.read()
+		return record
 
 def move(m):
-	"""
-	"""
-
-    M="" #rendered_move
-    capture=0
+    M = "" #rendered_move
+    capture = 0
     #castle
     if(m.lower()=="ooo" or m.lower()=="oo"):
         M='-'.join(m.upper()) #https://stackoverflow.com/a/3258612/8235105

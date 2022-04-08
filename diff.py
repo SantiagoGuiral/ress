@@ -93,8 +93,8 @@ def difference(prev_frame, frame):
 			try:
 				if (cnt3 == list_contours[i]).all():
 					break
-				except:
-					if (cnt3 == list_contours[i]):
+			except:
+				if (cnt3 == list_contours[i]):
 					break
 		del list_contours[i]
 	
@@ -178,7 +178,7 @@ def check_difference(prev_frame, frame):
 	diff = cv2.dilate(diff, kernel, iterations = 2) # Dilata los contornos de la diferencia
 
 	h, thresh = cv2.threshold(diff, 18, 255, cv2.THRESH_BINARY) # Umbraliza los contornos
- 	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # Obtiene los contornos que hay en la imágen
+	contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) # Obtiene los contornos que hay en la imágen
 
 	# Si hay contornos, se puede determinar que hubo un cambio en la posición de las piezas de ajedrez.
 	if len(contours) != 0: 
