@@ -11,7 +11,7 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = "video/video24.mp4"
+url = "video/video25.mp4"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
