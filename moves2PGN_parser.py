@@ -1,9 +1,26 @@
+"""
+----------SANTIAGO RIOS GUIRAL--------------------------------------------------
+----------santiago.riosg@udea.edu.co--------------------------------------------
+--------------------------------------------------------------------------------
+----------EMMANUEL GOMEZ OSPINA-------------------------------------------------
+----------emmanuel.gomezo@udea.edu.co-------------------------------------------
+--------------------------------------------------------------------------------
+----------Curso Básico de Procesamiento de Imágenes y Visión Artificial---------
+--------------------------------------------------------------------------------
+"""
+
+
 def start_read(source_file):
+	"""Obtiene el historial de movimientos de la partida de ajedrez y lo guarda en una cadena de caracteres.
+	"""
     with open(source_file,"r") as f:
         record=f.read()
         return record
 
 def move(m):
+	"""
+	"""
+
     M="" #rendered_move
     capture=0
     #castle

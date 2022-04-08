@@ -1,4 +1,19 @@
-pieces={
+"""
+----------SANTIAGO RIOS GUIRAL--------------------------------------------------
+----------santiago.riosg@udea.edu.co--------------------------------------------
+--------------------------------------------------------------------------------
+----------EMMANUEL GOMEZ OSPINA-------------------------------------------------
+----------emmanuel.gomezo@udea.edu.co-------------------------------------------
+--------------------------------------------------------------------------------
+----------Curso Básico de Procesamiento de Imágenes y Visión Artificial---------
+--------------------------------------------------------------------------------
+"""
+
+# Estructura para convertir el historia de partidas al formato PGN
+
+# El diccionario de pieces designa la posición inciial de las fichas en una partida de ajedrez.
+
+pieces = {
     'RL':'a1',
     'NL':'b1',
     'BL':'c1',
@@ -33,8 +48,8 @@ pieces={
     'p7':'g7',
     'p8':'h7'
 }
-#
-pos={
+# El diccionario pos guarda la posición previa y acutal de cada pieza de ajedrez
+pos = {
     'K' :['e1','e1'],
     'k' :['e8','e8'],
     'Q' :['d1','d1'],

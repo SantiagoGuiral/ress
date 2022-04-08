@@ -23,10 +23,10 @@ def order_points(pts):
 	rightMost = xSorted[2:, :]
 
 	leftMost = leftMost[np.argsort(leftMost[:, 1]), :]
-	(tl, bl) = leftMost
+	(tl, bl) = leftMost # Obtiene las dos coordenadas de la izquierda
 
 	D = dist.cdist(tl[np.newaxis], rightMost, "euclidean")[0]
-	(br, tr) = rightMost[np.argsort(D)[::-1], :]
+	(br, tr) = rightMost[np.argsort(D)[::-1], :] # Obtiene las dos coordenadas de la derecha
 
 	return [tl, tr, bl, br] # coordenadas ordenadas
 
