@@ -11,7 +11,7 @@ import utils as utils
 import motion as md
 import diff as diff
 
-url = "video/video23.mp4"
+url = "video/video24.mp4"
 
 window = tk.Tk()
 cap = cv2.VideoCapture(url)
@@ -135,6 +135,8 @@ def finish():
 
 	pgn_label.configure(text = "PGN State: Saved successfully", bg = 'white', fg = 'green', font = 'bold')
 	recording_label.configure(text = 'Recording State: Off', bg = 'white', fg = 'red', font = 'bold')
+	cap.release()	# Suelta el control del programa sobre la cámara del computador
+	cv2.destroyAllWindows()
 
 
 def help_view():

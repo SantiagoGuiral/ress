@@ -31,5 +31,29 @@ En caso de utilizar el sistema oeprativo Windows se puede utilizar el entorno pr
 
 También es importante definir el método de captura en el programa ya que se debe hacer un cambio dentro del archivo principal ‘ress.py’. Se puede ejecutar el programa usando un video con la captura de una partida de ajedrez. La dirección de este video se especifica en la variable URL. Además se puede capturar una partida en vivo, para esto se instala la aplicación IP Webcam en un celular Android y se inicial el servidor el cual define una dirección IP que se especifica en la variable URL.
 
-Se recomienda que la captura de la partida se haga con el uso de un soporte y desde una vista vertical al tablero.
+Se recomienda que la captura de la partida se haga con el uso de un soporte y desde una vista superior y vertical al tablero.
 
+4. En la ejecución del programa se recomienda descargar el video con nombre 'vide025.mp4' y utilizarlo como fuente para observar el correcto funcionamiento de esté. Cuando se abre el programa, lo primero que se debe hacer es presionar el boton para reconcer el tablero y luego de que todas las piezas esten posicionadas se inicia el proceso de identificar el movimiento de las piezas.
+
+
+Proceso:
+
+
+1. Establecer el método de captura de video. Elija un archivo de video o una grabación en vivo con la ayuda de la aplicación de cámara web IP. Dentro del programa, en el archivo ress.py, copie la ruta del archivo de video en la variable URL o copie la dirección IP obtenida del servidor de su teléfono. Por último, guarde los cambios del archivo.
+
+2. Coloque la cámara en un ángulo vertical desde el tablero de ajedrez.
+
+3. Inicie el programa usando Python, esto abrirá una interfaz gráfica de Tkinter.
+
+4. Mientras el tablero está vacío, capture un cuadro de imagen de la grabación usando el botón 'Reconocer tablero'. Esta acción tomará una captura de pantalla y verificará si hay un tablero de ajedrez disponible en el cuadro de grabación. También permite obtener las dimensiones del tablero y obtener la perspectiva para comprobar el movimiento de las piezas.
+Esto mostrará si el tablero fue capturado correctamente.
+
+5. Coloca las piezas de ajedrez dentro del tablero en sus posiciones iniciales.
+
+6. Después de que todo esté listo para comenzar el juego de ajedrez, presione el botón 'Iniciar grabación' para comenzar a rastrear las piezas.
+
+7. El programa utiliza un algoritmo de detección de movimiento para detectar cuando un jugador mueve una pieza. Si no hay movimiento el programa compara dos fotogramas y según su diferencia establece la posición anterior y actual de la pieza. Estos valores nos dan la posición inicial y final de los movimientos de la pieza en el tablero.
+
+8. Después de finalizar el juego, presione el botón 'Detener grabación' para finalizar la grabación. Esta acción genera un archivo de texto con el movimiento de las piezas.
+
+9. Los usuarios pueden usar el archivo de texto para estudiar y analizar el juego de ajedrez para mejorar sus habilidades.
