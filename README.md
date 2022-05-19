@@ -8,7 +8,7 @@ Authors:
 
 Santiago Ríos Guiral(@SantiagoGuiral)
 
-Emmanuel Gomez Ospina(@ego2509)
+Emmanuel Gomez Ospina(@Ego2509)
 
 University of Antioquia.
 
