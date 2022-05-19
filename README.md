@@ -21,7 +21,7 @@ Medellin, Colombia.
 
 The application requires the following dependencies.
 
-```
+```sh
 pip install numpy
 pip install matplotlib
 pip install opencv-python
@@ -30,9 +30,9 @@ pip install Pillow
 
 ## Exexute Ress
 
-To execute the application use the follwing command
+To execute the application use the following command
 
-```
+```sh
 python ress.py
 ```
 ## Features
